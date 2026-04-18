@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>南投縣生生有平板達標宣布活動</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      80% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes float-particle {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.5; }
+      50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+    }
+    
+    /* 新增進度條推進時的 Q彈發光特效 */
+    @keyframes progressBump {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(56, 189, 248, 0.8); border-color: rgba(56, 189, 248, 1); }
+      100% { transform: scale(1); }
+    }
+    
+    /* 新增南投100%標籤的閃動強調特效 */
+    @keyframes badgePulse {
+      0%, 100% { transform: rotate(-2deg) scale(1); filter: brightness(1); box-shadow: 0 0 15px rgba(250,204,21,0.6); }
+      50% { transform: rotate(-2deg) scale(1.1); filter: brightness(1.2); box-shadow: 0 0 40px rgba(250,204,21,1), inset 0 0 15px rgba(255,255,255,0.6); }
+    }
+    
+    .animate-pop-in { animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    .animate-progress-bump { animation: progressBump 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .animate-badge-pulse { animation: badgePulse 1.2s ease-in-out infinite; }
+    
+    /* 調整為適合亮色系的網格背景 */
+    .grid-bg {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(14, 165, 233, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(14, 165, 233, 0.08) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-100 font-sans text-slate-800 overflow-x-hidden relative min-h-screen">
+  
+  <!-- 南投縣地圖底圖 -->
+  <div class="fixed inset-0 z-0 pointer-events-none flex items-center justify-center opacity-30 mix-blend-multiply">
+    <img src="南投縣行政區圖new.png" alt="南投縣地圖" class="w-full h-full object-contain p-0 md:p-4 scale-110 md:scale-105" onerror="this.style.display='none'">
+  </div>
+
+  <!-- 背景網格與頂部裝飾漸層 -->
+  <div class="absolute inset-0 grid-bg pointer-events-none"></div>
+  <div class="absolute top-0 left-0 w-full h-[300px] bg-gradient-to-b from-white/60 to-transparent pointer-events-none"></div>
+
+  <!-- 頂部標題列 (縮減上下留白以節省空間) -->
+  <header class="relative z-10 pt-4 pb-2 px-4 text-center">
+    <h1 class="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 mb-2 drop-shadow-sm tracking-wide">
+      「投」入數位 學力全開！
+    </h1>
+    <p class="text-slate-600 text-base md:text-lg font-medium max-w-2xl mx-auto leading-snug">
+      生生用平板，讓每個角落都充滿學習的亮光！<br/>
+      <span id="network-status" class="text-sm text-blue-500 font-bold mt-1 inline-block">正在連線...</span>
+    </p>
+    
+    <!-- 進度條 (稍微調整上邊距) -->
+    <div id="progress-container" class="mt-4 max-w-xl mx-auto bg-white rounded-full h-8 md:h-10 border-2 border-slate-200 p-1.5 relative shadow-inner overflow-hidden transition-all duration-300 z-20">
+      <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full transition-all duration-1000 ease-out relative shadow-sm" style="width: 0%;">
+         <div class="absolute inset-0 bg-white/20 animate-pulse rounded-full"></div>
+         <div class="absolute top-0 right-0 bottom-0 w-4 bg-gradient-to-l from-white/80 to-transparent rounded-r-full"></div>
+      </div>
+      <div id="progress-text" class="absolute inset-0 flex items-center justify-center text-sm md:text-lg font-black text-slate-700 drop-shadow-[0_1px_2px_rgba(255,255,255,1)]">
+        完成度 0% (0/13)
+      </div>
+    </div>
+  </header>
+
+  <!-- 遊戲主體：平板網格 -->
+  <main class="relative z-10 max-w-6xl mx-auto px-2 md:px-4 pb-10">
+    <div id="loading-spinner" class="flex flex-col items-center justify-center py-20 text-blue-500">
+      <svg class="w-12 h-12 animate-pulse mb-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" x2="12.01" y1="20" y2="20"/></svg>
+      <p class="text-lg font-bold tracking-widest">系統初始化中...</p>
+    </div>
+    
+    <!-- 改為縮減間距的列排版 -->
+    <div id="tablet-grid" class="flex flex-col items-center gap-3 md:gap-4 mt-4 hidden">
+      <!-- 內容由 JS 動態生成 -->
+    </div>
+    
+    <!-- 控制面板 -->
+    <div id="control-panel" class="text-center mt-8 hidden">
+      <button onclick="window.showCelebrationModal()" class="px-6 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-full font-bold mr-4 transition-all shadow-md">再次觀看慶祝</button>
+      <button onclick="window.handleReset()" class="px-6 py-2 bg-white text-slate-600 border border-slate-300 hover:bg-slate-50 rounded-full font-bold transition-all shadow-sm">重新點亮 (重置)</button>
+    </div>
+  </main>
+
+  <!-- 慶祝彈出視窗 (亮色版) -->
+  <div id="celebration-modal" class="fixed inset-0 z-50 items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 hidden flex">
+    <div class="relative bg-white border-4 border-blue-300 p-6 md:p-10 rounded-[3rem] shadow-[0_0_50px_rgba(56,189,248,0.4)] max-w-4xl w-full text-center animate-pop-in overflow-hidden">
+      <!-- 漂浮粒子 -->
+      <div class="absolute top-10 left-10 text-blue-300 animate-[float-particle_4s_ease-in-out_infinite]"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <div class="absolute bottom-20 right-10 text-cyan-400 animate-[float-particle_5s_ease-in-out_infinite_1s]"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg></div>
+      <div class="absolute top-20 right-1/4 text-sky-300 animate-[float-particle_6s_ease-in-out_infinite_0.5s]"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect width="16" height="16" x="4" y="4" rx="2" ry="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg></div>
+
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-blue-100/60 blur-[80px] rounded-full pointer-events-none"></div>
+
+      <!-- 教室圖 -->
+      <div class="flex justify-center items-center mb-6 md:mb-8 relative mt-2">
+        <img src="image_4a819c.png" alt="生生用平板慶祝畫面" onerror="this.style.display='none'" class="w-auto h-auto max-w-full max-h-[35vh] md:max-h-[45vh] rounded-3xl shadow-xl border-4 border-white relative z-30 transform hover:scale-105 transition-transform duration-500 object-contain bg-slate-100">
+      </div>
+
+      <h2 class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 mb-6 md:mb-8 tracking-tight leading-tight drop-shadow-sm relative z-40">
+        生生有平板
+      </h2>
+      
+      <!-- 強調特效標籤 (拿掉英文並大幅放大字體與邊距) -->
+      <div class="inline-block bg-gradient-to-r from-yellow-400 to-amber-500 text-white px-8 py-4 md:px-12 md:py-5 rounded-full text-4xl md:text-7xl font-extrabold mb-8 md:mb-12 transform -rotate-2 border-4 md:border-8 border-yellow-100 relative z-40 animate-badge-pulse">
+        南投 100%
+      </div>
+
+      <div class="flex justify-center gap-4 relative z-40">
+        <button onclick="window.handleReset(); window.hideCelebrationModal();" class="px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold rounded-full transition-all hover:scale-105 shadow-md flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 md:w-6 md:h-6"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
+          <span class="text-sm md:text-base">重新開啟新回合</span>
+        </button>
+        <button onclick="window.hideCelebrationModal()" class="px-6 py-3 md:px-8 md:py-4 bg-white hover:bg-slate-50 text-slate-600 font-bold rounded-full transition-colors border border-slate-300 shadow-sm">
+          <span class="text-sm md:text-base">關閉視窗</span>
+        </button>
+      </div>
+      
+      <div class="mt-6 text-xs text-slate-400 opacity-60 font-light tracking-wider relative z-40">
+        Music by Pixabay
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
+    import { getFirestore, doc, setDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+
+    // 🎵 載入自訂音效
+    const clickAudio = new Audio('click.mp3');       
+    const celebrationAudio = new Audio('party.mp3'); 
+
+    function playClickSound() {
+      try {
+        clickAudio.currentTime = 0; 
+        const playPromise = clickAudio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.warn("無法播放點擊音效，請確認 click.mp3 檔案是否存在。");
+          });
+        }
+      } catch (e) { console.log("Audio play prevented"); }
+    }
+
+    function playCelebrationSound() {
+      try {
+        celebrationAudio.currentTime = 0;
+        const playPromise = celebrationAudio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.warn("無法播放慶祝音效，請確認 party.mp3 檔案是否存在。");
+          });
+        }
+      } catch (e) { console.log("Audio play prevented"); }
+    }
+
+    const TOWNSHIPS = [
+      { id: 'nantou', name: '南投市' }, { id: 'caotun', name: '草屯鎮' }, { id: 'zhongliao', name: '中寮鄉' },
+      { id: 'mingjian', name: '名間鄉' }, { id: 'jiji', name: '集集鎮' }, { id: 'shuili', name: '水里鄉' },
+      { id: 'xinyi', name: '信義鄉' }, { id: 'puli', name: '埔里鎮' }, { id: 'guoxing', name: '國姓鄉' },
+      { id: 'yuchi', name: '魚池鄉' }, { id: 'renai', name: '仁愛鄉' }, { id: 'zhushan', name: '竹山鎮' },
+      { id: 'lugu', name: '鹿谷鄉' }
+    ];
+
+    let state = {
+      litStatus: {},
+      isComplete: false,
+      useFirebase: false,
+      user: null,
+      litCount: 0 
+    };
+
+    let db, appId;
+
+    // --- SVG 圖示 (縮小尺寸以適應較小的平板) ---
+    const SVGS = {
+      tablet: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 md:w-8 md:h-8 text-slate-400 mb-1 md:mb-2"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>`,
+      sparkles: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 md:w-10 md:h-10 text-yellow-300 mb-1 md:mb-2 drop-shadow-md"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>`
+    };
+
+    async function init() {
+      if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+        state.useFirebase = true;
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        db = getFirestore(app);
+        appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        document.getElementById('network-status').innerText = '多人連線模式・邀請朋友一起點亮';
+
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+
+        onAuthStateChanged(auth, (currentUser) => {
+          state.user = currentUser;
+          if (currentUser) setupFirestoreListener();
+        });
+      } else {
+        document.getElementById('network-status').innerText = '單機模式・您可以直接點亮平板';
+        document.getElementById('loading-spinner').classList.add('hidden');
+        document.getElementById('tablet-grid').classList.remove('hidden');
+        TOWNSHIPS.forEach(t => state.litStatus[t.id] = false);
+        renderGrid();
+        updateProgress();
+      }
+    }
+
+    function setupFirestoreListener() {
+      const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tablets', 'shared_state');
+      onSnapshot(docRef, (docSnap) => {
+        document.getElementById('loading-spinner').classList.add('hidden');
+        document.getElementById('tablet-grid').classList.remove('hidden');
+        
+        if (docSnap.exists()) {
+          state.litStatus = docSnap.data();
+        } else {
+          state.litStatus = {};
+        }
+        
+        renderGrid();
+        updateProgress();
+      }, (err) => {
+        console.error("Firestore listen error", err);
+        document.getElementById('network-status').innerText = '連線失敗，已切換為單機模式';
+        document.getElementById('loading-spinner').classList.add('hidden');
+        document.getElementById('tablet-grid').classList.remove('hidden');
+        renderGrid();
+      });
+    }
+
+    // --- 繪製平板網格 (改為 6, 7 排列) ---
+    function renderGrid() {
+      const grid = document.getElementById('tablet-grid');
+      grid.innerHTML = '';
+
+      // 將原本的 3 排除以 2 排：6 個一排，7 個一排
+      const rows = [
+        TOWNSHIPS.slice(0, 6),
+        TOWNSHIPS.slice(6, 13)
+      ];
+
+      rows.forEach(rowTowns => {
+        const rowDiv = document.createElement('div');
+        // 縮小 gap 以塞入更多平板
+        rowDiv.className = 'flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 lg:gap-5 w-full';
+        
+        rowTowns.forEach(town => {
+          const isLit = state.litStatus[town.id];
+          const btn = document.createElement('button');
+          btn.onclick = () => window.handleTabletClick(town.id);
+          
+          let btnClasses = isLit 
+            ? 'bg-white shadow-[0_5px_15px_rgba(56,189,248,0.6)] scale-105 transform cursor-pointer ring-2 md:ring-4 ring-cyan-300/50'
+            : 'bg-white hover:-translate-y-1 hover:shadow-xl cursor-pointer shadow-md';
+          
+          // 縮小平板寬高，讓畫面一頁能裝得下
+          btn.className = `group relative flex flex-col items-center justify-center w-[100px] h-[140px] sm:w-[110px] sm:h-[155px] md:w-[115px] md:h-[160px] lg:w-[130px] lg:h-[185px] rounded-[1rem] md:rounded-[1.25rem] transition-all duration-500 ${btnClasses}`;
+
+          let innerBg = isLit ? 'bg-gradient-to-br from-cyan-400 to-blue-500' : 'bg-slate-800';
+          
+          // 縮小內部文字
+          let innerHtml = isLit ? `
+            <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+            ${SVGS.sparkles}
+            <span class="text-lg md:text-xl font-black text-white tracking-widest drop-shadow-md z-10">${town.name}</span>
+          ` : `
+            ${SVGS.tablet}
+            <span class="text-sm md:text-base font-bold text-slate-400 tracking-widest">${town.name}</span>
+          `;
+
+          // 保持新款 iPad 樣式但縮減邊距
+          btn.innerHTML = `
+            <div class="absolute top-[6px] bottom-[6px] left-[6px] right-[6px] md:top-2 md:bottom-2 md:left-2 md:right-2 rounded-lg flex flex-col items-center justify-center overflow-hidden transition-colors duration-500 ${innerBg} shadow-inner">
+              ${innerHtml}
+              <div class="absolute bottom-1 md:bottom-1.5 left-1/2 transform -translate-x-1/2 w-8 md:w-10 h-1 rounded-full ${isLit ? 'bg-white/80' : 'bg-white/20'}"></div>
+            </div>
+            <div class="absolute top-[3px] left-1/2 transform -translate-x-1/2 w-[3px] h-[3px] md:w-[4px] md:h-[4px] rounded-full bg-slate-300"></div>
+          `;
+          rowDiv.appendChild(btn);
+        });
+        
+        grid.appendChild(rowDiv);
+      });
+    }
+
+    function updateProgress() {
+      const newLitCount = Object.values(state.litStatus).filter(Boolean).length;
+      const percent = Math.round((newLitCount / 13) * 100);
+      
+      document.getElementById('progress-bar-fill').style.width = `${percent}%`;
+      document.getElementById('progress-text').innerText = `完成度 ${percent}% (${newLitCount}/13)`;
+
+      if (newLitCount > state.litCount) {
+        const container = document.getElementById('progress-container');
+        container.classList.remove('animate-progress-bump');
+        void container.offsetWidth; 
+        container.classList.add('animate-progress-bump');
+      }
+      state.litCount = newLitCount;
+
+      const allLit = (newLitCount === 13);
+      if (allLit && !state.isComplete) {
+        state.isComplete = true;
+        window.showCelebrationModal();
+        document.getElementById('control-panel').classList.remove('hidden');
+      } else if (!allLit && state.isComplete) {
+        state.isComplete = false;
+        window.hideCelebrationModal();
+        document.getElementById('control-panel').classList.add('hidden');
+      }
+    }
+
+    window.handleTabletClick = async (townId) => {
+      if (state.litStatus[townId]) return;
+
+      playClickSound();
+
+      if (state.useFirebase && state.user) {
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tablets', 'shared_state');
+        try {
+          await setDoc(docRef, { [townId]: true }, { merge: true });
+        } catch(e) { console.error(e); }
+      } else {
+        state.litStatus[townId] = true;
+        renderGrid();
+        updateProgress();
+      }
+    };
+
+    window.handleReset = async () => {
+      if (state.useFirebase && state.user) {
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tablets', 'shared_state');
+        const resetData = {};
+        TOWNSHIPS.forEach(t => resetData[t.id] = false);
+        try { await setDoc(docRef, resetData); } catch (e) { console.error(e); }
+      } else {
+        TOWNSHIPS.forEach(t => state.litStatus[t.id] = false);
+        renderGrid();
+        updateProgress();
+      }
+    };
+
+    window.showCelebrationModal = () => {
+      const modal = document.getElementById('celebration-modal');
+      modal.classList.remove('hidden');
+      
+      playCelebrationSound();
+      
+      const duration = 25 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+
+      function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+      const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return clearInterval(interval);
+        const particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+      }, 250);
+    };
+
+    window.hideCelebrationModal = () => {
+      document.getElementById('celebration-modal').classList.add('hidden');
+    };
+
+    init();
+  </script>
+</body>
+</html>
