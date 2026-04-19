@@ -6,14 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>南投縣生生有平板達標宣布活動</title>
 
+  <!-- 加入網頁標籤圖示 (Favicon) -->
   <link rel="icon" href="42531_f5.png" type="image/png">
 
+  <!-- 1. 引入 Google Fonts：思源黑體 (Noto Sans TC) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
 
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <!-- 2. 設定 Tailwind 使用思源黑體作為預設字體 -->
   <script>
     tailwind.config = {
       theme: {
@@ -415,7 +418,8 @@
       isComplete: false,
       useFirebase: false,
       user: null,
-      litCount: 0
+      litCount: 0,
+      confettiInterval: null // 新增：用來記錄撒花計時器的 ID
     };
 
     let db, appId;
@@ -515,7 +519,7 @@
 
           let innerHtml = isLit ? `
             <div class="absolute inset-0 bg-white/10 animate-pulse"></div>
-            ${SVGS.sparkles}
+            <img src="nantoulogo_lightblue.png" class="w-10 h-10 md:w-12 md:h-12 object-contain mb-1 md:mb-2 z-10 drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]" alt="Logo" onerror="this.style.display='none'">
             <span class="text-lg md:text-xl font-black text-white tracking-widest drop-shadow-md z-10">${town.name}</span>
           ` : `
             ${SVGS.tablet}
@@ -580,8 +584,20 @@
       }
     };
 
+    // 新增：清除撒花特效的函數
+    function stopConfetti() {
+      if (state.confettiInterval) {
+        clearInterval(state.confettiInterval);
+        state.confettiInterval = null;
+      }
+      if (window.confetti) {
+        window.confetti.reset(); // 清除畫面上所有的紙片
+      }
+    }
+
     window.handleReset = async () => {
       stopCelebrationSound();
+      stopConfetti(); // 重置時立刻停止撒花
 
       if (state.useFirebase && state.user) {
         const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tablets', 'shared_state');
@@ -607,9 +623,12 @@
 
       function randomInRange(min, max) { return Math.random() * (max - min) + min; }
 
-      const interval = setInterval(function () {
+      // 避免重複開啟造成疊加，先清空現有的計時器
+      if (state.confettiInterval) clearInterval(state.confettiInterval);
+
+      state.confettiInterval = setInterval(function () {
         const timeLeft = animationEnd - Date.now();
-        if (timeLeft <= 0) return clearInterval(interval);
+        if (timeLeft <= 0) return clearInterval(state.confettiInterval);
         const particleCount = 50 * (timeLeft / duration);
         confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
         confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
@@ -618,6 +637,7 @@
 
     window.hideCelebrationModal = () => {
       stopCelebrationSound();
+      stopConfetti(); // 關閉視窗時也立刻停止撒花
       document.getElementById('celebration-modal').classList.add('hidden');
     };
 
