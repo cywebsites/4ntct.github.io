@@ -54,10 +54,10 @@
       from { background-position: 1.5rem 0; }
       to { background-position: 0 0; }
     }
-    /* 🌟 高亮版：99% 地圖專屬閃爍放大特效 (黃金+科技藍雙重光暈) */
+    /* 地圖專屬閃爍放大特效 */
     @keyframes mapGlow {
-      0%, 100% { filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8)) drop-shadow(0 0 30px rgba(49, 126, 224, 0.6)); transform: scale(1); }
-      50% { filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1)) drop-shadow(0 0 60px rgba(49, 126, 224, 0.9)); transform: scale(1.06); }
+      0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 25px rgba(49, 126, 224, 0.4)); transform: scale(1); }
+      50% { filter: drop-shadow(0 0 20px rgba(255, 255, 255, 1)) drop-shadow(0 0 50px rgba(49, 126, 224, 0.8)); transform: scale(1.03); }
     }
     .progress-stripes {
       background-image: linear-gradient(
@@ -73,11 +73,15 @@
       background-size: 1.5rem 1.5rem;
       animation: progress-stripes-anim 1s linear infinite;
     }
+    /* 強烈白色外框特效 (確保任何背景下都清晰) */
     .title-outline {
       color: #317EE0;
       -webkit-text-stroke: 4px white;
       paint-order: stroke fill;
-      filter: drop-shadow(0 3px 4px rgba(0,0,0,0.1));
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
+    }
+    @media (min-width: 768px) {
+      .title-outline { -webkit-text-stroke: 5px white; }
     }
     @supports not (paint-order: stroke fill) {
       .title-outline {
@@ -111,24 +115,24 @@
   </button>
 
   <!-- ============================================== -->
-  <!-- 1. 角色選擇大門 (進入頁面強制攔截) -->
+  <!-- 1. 角色選擇大門 -->
   <!-- ============================================== -->
   <div id="role-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/90 backdrop-blur-sm p-4">
     <div class="bg-white border-4 border-[#317EE0] rounded-[2rem] p-6 md:p-12 shadow-2xl max-w-lg w-full text-center animate-pop-in">
       <img src="42530_f6.png" class="h-10 mx-auto mb-6" alt="南投縣政府" onerror="this.style.display='none'">
       <h2 class="text-3xl md:text-4xl font-black text-[#317EE0] mb-8 tracking-wider">選擇活動身分</h2>
       <div class="flex flex-col gap-4">
-        <button onclick="window.selectRole('admin')" class="w-full py-4 bg-[#317EE0] hover:bg-[#2563B0] text-white font-bold rounded-2xl text-xl transition-transform hover:scale-105 shadow-md flex justify-center items-center gap-3">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M18.36 6.64A9 9 0 0 1 21 13a9 9 0 1 1-18 0 9 9 0 0 1 2.64-6.36"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
-          <span>啟動者 (長官/主持)</span>
+        <button onclick="window.selectRole('admin')" class="w-full py-4 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-2xl text-xl transition-transform hover:scale-105 shadow-sm border border-slate-300 flex justify-center items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          <span>管理者 (工作人員)</span>
         </button>
         <button onclick="window.selectRole('lighter')" class="w-full py-4 bg-[#FF7145] hover:bg-[#E65C30] text-white font-bold rounded-2xl text-xl transition-transform hover:scale-105 shadow-md flex justify-center items-center gap-3">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
           <span>貴賓 (現場參與)</span>
         </button>
-        <button onclick="window.selectRole('viewer')" class="w-full py-4 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-2xl text-xl transition-transform hover:scale-105 shadow-sm border border-slate-300 flex justify-center items-center gap-3">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-          <span>觀 眾 (純觀看畫面)</span>
+        <button onclick="window.selectRole('mayor')" class="w-full py-4 bg-[#317EE0] hover:bg-[#2563B0] text-white font-bold rounded-2xl text-xl transition-transform hover:scale-105 shadow-md flex justify-center items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M18.36 6.64A9 9 0 0 1 21 13a9 9 0 1 1-18 0 9 9 0 0 1 2.64-6.36"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+          <span>縣長 (達標啟動)</span>
         </button>
       </div>
       <p class="text-xs text-slate-400 mt-6">系統將自動為您連線並同步音效</p>
@@ -136,7 +140,7 @@
   </div>
 
   <!-- 地圖與網格背景 -->
-  <div class="fixed inset-0 z-0 pointer-events-none flex items-center justify-center opacity-30 mix-blend-multiply">
+  <div class="fixed inset-0 z-0 pointer-events-none flex items-center justify-center opacity-60 mix-blend-multiply">
     <img src="nantoumap4.png" alt="南投縣地圖" class="w-full h-full object-contain p-0 md:p-4 scale-110 md:scale-105" onerror="this.style.display='none'">
   </div>
   <div class="absolute inset-0 grid-bg pointer-events-none z-0"></div>
@@ -148,16 +152,15 @@
       <img src="title_tou.png" alt="投" class="h-[1.2em] md:h-[1.3em] inline-block mr-1 md:mr-3 transform translate-y-1 md:translate-y-2" style="filter: drop-shadow(1.5px 1.5px 0 white) drop-shadow(-1.5px -1.5px 0 white) drop-shadow(1.5px -1.5px 0 white) drop-shadow(-1.5px 1.5px 0 white) drop-shadow(0 3px 4px rgba(0,0,0,0.1));" onerror="this.style.display='none'">入數位 學力全開
     </h1>
     <p class="text-slate-600 text-base md:text-lg font-medium max-w-2xl mx-auto leading-snug">
-      生生有平板，讓每個角落都充滿學習的亮光！<br/>
-      <span id="network-status" class="text-sm text-[#317EE0] font-bold mt-1 inline-block">等待選擇身分...</span>
+      生生有平板，讓每個角落都充滿學習的亮光！
     </p>
     
-    <div id="progress-container" class="mt-4 max-w-xl mx-auto bg-white rounded-full h-8 md:h-10 border-2 border-[#FF7145]/30 p-1.5 relative shadow-inner overflow-hidden transition-all duration-300 z-20">
+    <div id="progress-container" class="mt-4 md:mt-6 w-11/12 md:w-4/5 max-w-4xl mx-auto bg-white rounded-full h-10 md:h-14 border-[3px] border-[#FF7145]/30 p-1.5 md:p-2 relative shadow-inner overflow-hidden transition-all duration-300 z-20">
       <div id="progress-bar-fill" class="h-full bg-[#FF7145] rounded-full transition-all duration-1000 ease-out relative shadow-sm overflow-hidden" style="width: 0%;">
          <div class="absolute inset-0 progress-stripes"></div>
          <div class="absolute top-0 right-0 bottom-0 w-6 bg-gradient-to-l from-white/80 to-transparent rounded-r-full"></div>
       </div>
-      <div id="progress-text" class="absolute inset-0 flex items-center justify-center text-sm md:text-lg font-black text-slate-700 drop-shadow-[0_1px_2px_rgba(255,255,255,1)]">
+      <div id="progress-text" class="absolute inset-0 flex items-center justify-center text-base md:text-2xl font-black text-slate-700 drop-shadow-[0_1px_2px_rgba(255,255,255,1)] tracking-wide">
         完成度 0% (0/13)
       </div>
     </div>
@@ -173,70 +176,101 @@
     <div id="tablet-grid" class="flex flex-col items-center gap-3 md:gap-4 mt-4 hidden">
       <!-- 內容由 JS 動態生成 -->
     </div>
+
+    <!-- 1. 貴賓面板 (主畫面下方，到達99%時會自動隱藏) -->
+    <div id="panel-lighter" class="relative z-40 w-full flex justify-center pt-8 pb-16 md:pb-24 hidden">
+      <button onclick="window.handleLighterClick()" class="touch-manipulation select-none px-10 py-3 md:px-16 md:py-4 bg-[#FF7145] hover:bg-[#E65C30] text-white font-black rounded-full text-xl md:text-2xl transition-transform active:scale-95 shadow-[0_10px_20px_rgba(0,0,0,0.2)] border-4 border-[#FFD0C2] flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 md:w-8 md:h-8 animate-pulse"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+        <span>點擊進度</span>
+      </button>
+    </div>
   </main>
 
-  <!-- 頁尾 Logo (緊接在平板之後排列) -->
-  <footer class="relative z-10 w-full flex justify-center items-center pt-8 pb-8">
-    <img src="42530_f6.png" alt="南投縣政府" class="h-8 md:h-12 object-contain opacity-90 drop-shadow-md hover:opacity-100 transition-opacity" onerror="this.style.display='none'">
+  <!-- 頁尾 Logo -->
+  <footer class="fixed bottom-3 right-3 md:bottom-5 md:right-5 z-20 pointer-events-none">
+    <img src="42530_f6.png" alt="南投縣政府" class="h-6 md:h-10 object-contain opacity-90 drop-shadow-md pointer-events-auto" onerror="this.style.display='none'">
   </footer>
 
-  <!-- 隱形的佔位區塊：當底部控制面板出現時，自動撐開網頁最底部空間，確保 Logo 不被面板遮擋 -->
+  <!-- 隱形的佔位區塊：為主畫面管理者的底部按鈕預留空間 -->
   <div id="panel-spacer" class="w-full h-24 md:h-32 hidden"></div>
 
+  <!-- 狀態文字 (左下角) -->
+  <div class="fixed bottom-2 left-2 md:bottom-3 md:left-3 z-10 pointer-events-none">
+    <span id="network-status" class="text-[10px] md:text-xs text-slate-400/60 font-light tracking-wide">等待選擇身分...</span>
+  </div>
+
   <!-- ============================================== -->
-  <!-- 🌟 升級版亮色系：99% 地圖集氣視窗 -->
+  <!-- 🌟 升級版毛玻璃：99% 地圖集氣視窗 -->
   <!-- ============================================== -->
-  <!-- 背景遮罩改為透光白/灰，保留背景辨識度 -->
-  <div id="map-modal" class="fixed inset-0 z-[35] items-center justify-center bg-slate-800/40 backdrop-blur-md p-4 pb-28 md:pb-36 hidden flex overflow-hidden">
+  <!-- 背景遮罩改為 85% 深度不透明並加上模糊，徹底遮擋主畫面文字 -->
+  <div id="map-modal" class="fixed inset-0 z-[60] items-center justify-center bg-slate-900/85 backdrop-blur-md p-3 md:p-6 hidden flex overflow-hidden">
     
-    <!-- 視窗本體改為亮色系白底 + 橘色雙邊框，更吸睛耀眼 -->
-    <div class="relative bg-white/95 border-[6px] border-[#FF7145] rounded-[2rem] md:rounded-[3rem] shadow-[0_0_60px_rgba(255,113,69,0.5)] w-full max-w-4xl h-[85vh] md:h-[80vh] text-center animate-pop-in flex flex-col items-center justify-between p-6 md:p-10">
+    <!-- 毛玻璃視窗本體 -->
+    <div class="relative bg-white/60 backdrop-blur-2xl border-2 border-white/80 shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-[2rem] md:rounded-[3rem] w-full max-w-[85rem] h-[92vh] md:h-[85vh] text-center animate-pop-in flex flex-col items-center p-4 md:p-8 lg:px-12">
       
-      <!-- 標題改為高亮漸層藍，不再是白字 -->
-      <h2 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#317EE0] to-[#5A9CF0] mt-2 mb-2 md:mb-4 tracking-widest drop-shadow-md flex-shrink-0 animate-pulse">
-        全縣點亮 準備啟動
-      </h2>
-      
-      <div class="flex-1 w-full min-h-0 relative flex justify-center items-center my-4">
-        <!-- 地圖背後的放射狀金色陽光光暈 -->
-        <div class="absolute inset-0 bg-[radial-gradient(circle,rgba(255,215,0,0.3)_0%,rgba(49,126,224,0.1)_50%,transparent_70%)] animate-pulse rounded-full blur-[20px] pointer-events-none"></div>
+      <!-- 內容區塊：桌面版左右排版，手機版上下排版 -->
+      <div class="flex flex-col md:flex-row flex-1 w-full min-h-0 items-center justify-center gap-4 md:gap-12 lg:gap-16 mt-2">
         
-        <img src="nantoumapSVG.svg" alt="南投縣地圖" class="w-full h-full object-contain animate-map-glow z-10 relative" onerror="this.style.display='none'">
+        <!-- 左側/上方：放大的地圖 -->
+        <div class="flex-1 w-full h-full relative flex justify-center items-center overflow-visible">
+          <div class="absolute inset-0 bg-[radial-gradient(circle,rgba(255,215,0,0.15)_0%,rgba(49,126,224,0.1)_50%,transparent_70%)] animate-pulse rounded-full blur-[20px] pointer-events-none"></div>
+          <img src="nantoumapBig.png" alt="南投縣地圖" class="w-full h-full object-contain animate-map-glow z-10 relative drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] scale-[1.15] md:scale-[1.3] lg:scale-[1.45] transform origin-center" onerror="this.style.display='none'">
+        </div>
+        
+        <!-- 右側/下方 按鈕與標題容器 (99%時所有人都能看到這個容器，藉此顯示標題) -->
+        <div id="modal-right-panel" class="hidden w-full md:w-[380px] lg:w-[480px] xl:w-[520px] flex-col justify-center md:justify-start md:pt-16 lg:pt-24 items-center gap-8 md:gap-12 lg:gap-16 flex-shrink-0 z-20 bg-white/40 md:bg-transparent rounded-3xl p-6 md:p-0 shadow-sm md:shadow-none">
+          
+          <!-- 標題：所有人可見。固定不閃爍、超大字體、行距拉大、套用純白外框，桌面版自動分行 -->
+          <h2 class="text-[2.75rem] sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-[5.5rem] font-black py-2 tracking-widest flex-shrink-0 title-outline leading-[1.3] md:leading-[1.5]">
+            南投縣<br class="hidden md:block"/>生生有平板
+          </h2>
+
+          <!-- 縣長專屬達標鍵 -->
+          <div id="panel-mayor" class="w-full hidden">
+            <button onclick="window.handleAdminTarget()" class="w-full pointer-events-auto touch-manipulation select-none px-6 py-4 md:py-6 lg:py-8 bg-gradient-to-r from-[#317EE0] to-[#5A9CF0] hover:from-[#2563B0] hover:to-[#317EE0] text-white font-black rounded-3xl md:rounded-[2rem] text-2xl md:text-4xl transition-transform active:scale-95 shadow-[0_10px_30px_rgba(49,126,224,0.6)] border-4 border-white flex justify-center items-center gap-3 animate-bounce">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 md:w-12 md:h-12"><path d="M18.36 6.64A9 9 0 0 1 21 13a9 9 0 1 1-18 0 9 9 0 0 1 2.64-6.36"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+              <span>啟動達標</span>
+            </button>
+          </div>
+
+          <!-- 管理者專屬面板 (於99%時移入視窗右側) -->
+          <div id="panel-admin-modal" class="w-full hidden flex-col gap-4 lg:gap-5">
+            <!-- 音樂切換鈕 (管理者專屬) -->
+            <button onclick="window.handleToggleBGM()" class="w-full px-6 py-3 lg:py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-3xl md:rounded-[2rem] text-lg md:text-2xl transition-transform active:scale-95 shadow-[0_10px_20px_rgba(16,185,129,0.4)] border-4 border-emerald-400 flex justify-center items-center gap-2">
+              <span class="text-bgm-label">▶️ 播放音樂</span>
+            </button>
+            <button onclick="window.handleAdminTarget()" class="w-full px-6 py-3 lg:py-4 bg-[#317EE0] hover:bg-[#5A9CF0] text-white font-black rounded-3xl md:rounded-[2rem] text-lg md:text-2xl transition-transform active:scale-95 shadow-[0_10px_20px_rgba(49,126,224,0.4)] border-4 border-[#8AB9F5] flex justify-center items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 md:w-6 md:h-6"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <span>強制達標 (備用)</span>
+            </button>
+            <button onclick="window.handleReset()" class="w-full px-6 py-3 lg:py-4 bg-slate-700/80 hover:bg-slate-600 text-white font-bold rounded-2xl md:rounded-3xl text-base md:text-lg transition-transform active:scale-95 shadow-sm border-2 border-slate-500 flex justify-center items-center">
+              重置進度
+            </button>
+          </div>
+
+        </div>
       </div>
-      
-      <!-- 底部提示改為實心高亮漸層橘按鈕風格 -->
-      <p class="text-white bg-gradient-to-r from-[#FF7145] to-[#FF8A66] px-8 py-3 rounded-full text-xl md:text-3xl font-bold animate-bounce tracking-wider flex-shrink-0 shadow-[0_0_20px_rgba(255,113,69,0.6)] border-4 border-white">
-        等待啟動者按下達標鍵...
-      </p>
     </div>
   </div>
 
   <!-- ============================================== -->
-  <!-- 底部操作面板 (依照身分顯示) -->
+  <!-- 主畫面的底部操作面板 (管理者) -->
   <!-- ============================================== -->
-  
-  <!-- 貴賓面板 (原點燈者) -->
-  <div id="panel-lighter" class="fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t-2 border-orange-100 p-4 md:p-6 flex justify-center z-40 hidden shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
-    <!-- 加入 touch-manipulation (防止雙擊放大) 和 select-none (防止文字反白) -->
-    <button onclick="window.handleLighterClick()" class="touch-manipulation select-none px-10 py-3 md:px-16 md:py-4 bg-[#FF7145] hover:bg-[#E65C30] text-white font-black rounded-full text-xl md:text-2xl transition-transform active:scale-95 shadow-xl border-4 border-[#FFD0C2] flex items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 md:w-8 md:h-8 animate-pulse"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
-      <span>點擊進度</span>
+  <div id="panel-admin" class="fixed bottom-0 left-0 w-full bg-slate-900/95 backdrop-blur-md border-t-4 border-slate-600 p-4 md:p-6 flex flex-wrap justify-center items-center gap-3 z-40 hidden shadow-[0_-10px_30px_rgba(0,0,0,0.2)]">
+    <!-- 音樂切換鈕 -->
+    <button onclick="window.handleToggleBGM()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-full transition-transform active:scale-95 shadow-sm border-2 border-emerald-400 flex items-center gap-2">
+      <span class="text-bgm-label">▶️ 播放音樂</span>
     </button>
-  </div>
-
-  <!-- 啟動者面板 (原管理者) -->
-  <div id="panel-admin" class="fixed bottom-0 left-0 w-full bg-slate-900/95 backdrop-blur-md border-t-4 border-[#317EE0] p-4 md:p-6 flex flex-row justify-center items-center gap-4 z-40 hidden shadow-[0_-10px_30px_rgba(0,0,0,0.2)]">
-    <button onclick="window.handleAdminTarget()" class="px-8 py-3 md:px-12 md:py-4 bg-[#317EE0] hover:bg-[#5A9CF0] text-white font-black rounded-full text-xl md:text-2xl transition-transform active:scale-95 shadow-[0_0_20px_rgba(49,126,224,0.6)] border-4 border-[#8AB9F5] flex items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 md:w-8 md:h-8"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-      <span>達標鍵 (100%)</span>
+    <button onclick="window.handleAdminTarget()" class="px-5 py-2 bg-[#317EE0] hover:bg-[#5A9CF0] text-white font-bold rounded-full transition-transform active:scale-95 shadow-sm border-2 border-[#8AB9F5] flex items-center gap-2">
+      <span>強制達標 (備用)</span>
     </button>
-    <button onclick="window.handleReset()" class="px-6 py-3 md:py-4 bg-transparent border-2 border-slate-600 hover:bg-slate-800 text-slate-300 font-bold rounded-full text-sm md:text-lg transition-transform active:scale-95 shadow-sm">
+    <button onclick="window.handleReset()" class="px-5 py-2 bg-transparent border-2 border-slate-500 hover:bg-slate-700 text-slate-300 font-bold rounded-full transition-transform active:scale-95 shadow-sm">
       重置進度
     </button>
   </div>
 
   <!-- ============================================== -->
-  <!-- 慶祝彈出視窗 -->
+  <!-- 慶祝彈出視窗 (100% 時顯示) -->
   <!-- ============================================== -->
   <div id="celebration-modal" class="fixed inset-0 z-50 items-center justify-center bg-slate-900/80 backdrop-blur-md p-2 md:p-6 hidden flex overflow-hidden">
     <div class="relative bg-white border-4 md:border-8 border-[#317EE0] rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] shadow-[0_0_80px_rgba(49,126,224,0.5)] max-w-7xl w-[96vw] lg:w-[90vw] h-[95vh] text-center animate-pop-in flex flex-col items-center overflow-y-auto overflow-x-hidden pb-16 md:pb-6">
@@ -248,7 +282,7 @@
 
       <div class="flex flex-col items-center my-auto w-full shrink min-h-0 pt-4 md:pt-0 z-30">
         <div class="flex-1 flex justify-center items-center w-full px-4 lg:px-8 shrink min-h-0">
-          <img src="image_4a819c.png" alt="生生有平板慶祝畫面" onerror="this.style.display='none'" class="max-w-full max-h-full object-contain rounded-[1rem] md:rounded-2xl lg:rounded-3xl shadow-2xl border-4 md:border-[6px] border-white bg-slate-100">
+          <img src="celebration.png" alt="生生有平板慶祝畫面" onerror="this.style.display='none'" class="max-w-full max-h-full object-contain rounded-[1rem] md:rounded-2xl lg:rounded-3xl shadow-2xl border-4 md:border-[6px] border-white bg-slate-100">
         </div>
         <div class="shrink-0 flex flex-col items-center pt-3 md:pt-5 lg:pt-6 z-40">
           <h2 class="text-4xl md:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black text-transparent bg-clip-text bg-gradient-to-r from-[#317EE0] to-[#5A9CF0] tracking-tight leading-tight drop-shadow-md m-0">
@@ -263,20 +297,18 @@
         </div>
       </div>
 
-      <div class="absolute bottom-4 left-4 md:bottom-6 md:left-6 flex flex-col items-start gap-2 md:gap-3 z-50 hidden admin-only-btn">
-        <!-- 新增：返回 99% 啟動畫面按鈕 -->
-        <button onclick="window.handleBackTo99(); window.hideCelebrationModal();" class="px-4 py-2 md:px-6 md:py-2.5 bg-gradient-to-r from-[#FF7145] to-[#FF8A66] hover:from-[#E65C30] hover:to-[#FF7145] text-white font-bold rounded-full transition-all hover:scale-105 shadow-[0_0_15px_rgba(255,113,69,0.5)] flex items-center gap-1.5 md:gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 md:w-5 md:h-5"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
-          <span class="text-xs md:text-sm lg:text-base">返回啟動畫面</span>
-        </button>
-        
-        <!-- 原本的重置按鈕 (調暗並縮小，避免彩排時誤觸完全歸零) -->
-        <button onclick="window.handleReset(); window.hideCelebrationModal();" class="px-3 py-1.5 md:px-4 md:py-2 bg-slate-700/80 hover:bg-slate-600 text-white font-bold rounded-full transition-all hover:scale-105 shadow-md flex items-center gap-1.5 border border-slate-500">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 md:w-4 md:h-4"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-          <span class="text-[10px] md:text-xs">完全重置進度 (0%)</span>
-        </button>
-        
-        <div class="text-[10px] md:text-xs text-slate-400 opacity-80 font-light tracking-wider ml-1 md:ml-2">Designed by NTCT</div>
+      <div class="absolute bottom-4 left-4 md:bottom-6 md:left-6 flex flex-col items-start gap-1.5 md:gap-2 z-50">
+        <div class="flex flex-col items-start gap-2 md:gap-3 hidden admin-only-btn">
+          <button onclick="window.handleBackTo99(); window.hideCelebrationModal();" class="px-4 py-2 md:px-6 md:py-2.5 bg-gradient-to-r from-[#FF7145] to-[#FF8A66] hover:from-[#E65C30] hover:to-[#FF7145] text-white font-bold rounded-full transition-all hover:scale-105 shadow-[0_0_15px_rgba(255,113,69,0.5)] flex items-center gap-1.5 md:gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 md:w-5 md:h-5"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+            <span class="text-xs md:text-sm lg:text-base">返回啟動畫面</span>
+          </button>
+          <button onclick="window.handleReset(); window.hideCelebrationModal();" class="px-3 py-1.5 md:px-4 md:py-2 bg-slate-700/80 hover:bg-slate-600 text-white font-bold rounded-full transition-all hover:scale-105 shadow-md flex items-center gap-1.5 border border-slate-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 md:w-4 md:h-4"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span class="text-[10px] md:text-xs">完全重置進度 (0%)</span>
+          </button>
+        </div>
+        <div class="text-[10px] md:text-xs text-slate-400 opacity-80 font-light tracking-wider ml-1 md:ml-2 mt-1">Designed by NTCT</div>
       </div>
 
       <div class="absolute bottom-4 right-4 md:bottom-6 md:right-6 flex flex-col items-end gap-1.5 z-50">
@@ -294,14 +326,30 @@
     import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
     import { getFirestore, doc, setDoc, onSnapshot, increment } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
-    // 🎵 載入自訂音效
+    // 🎵 載入所有音效
     const clickAudio = new Audio('click.mp3');       
     const celebrationAudio = new Audio('party.mp3'); 
+    const tapAudio = new Audio('tap.mp3'); 
+    const bgmAudio = new Audio('05lightering.mp3');
+
+    // 背景音樂設定：循環播放，音量降低至 15% 避免蓋過點擊音效
+    bgmAudio.loop = true;
+    bgmAudio.volume = 0.15;
+    
+    // 紀錄音效是否已解鎖
+    let isAudioUnlocked = false;
 
     function playClickSound() {
       try {
         clickAudio.currentTime = 0; 
         clickAudio.play().catch(()=>{});
+      } catch (e) {}
+    }
+
+    function playTapSound() {
+      try {
+        tapAudio.currentTime = 0; 
+        tapAudio.play().catch(()=>{});
       } catch (e) {}
     }
 
@@ -320,7 +368,7 @@
     }
 
     // ==========================================
-    // 🔥 步驟四：在這裡填入您的 Firebase 設定碼
+    // 🔥 Firebase 設定碼
     // ==========================================
     const myFirebaseConfig = {
       apiKey: "AIzaSyCWVUoWYFWBAqYYJjLfD1iLumZWTfuYMwg",
@@ -333,7 +381,6 @@
     };
     // ==========================================
 
-    // 顯示順序 (南投市 -> 仁愛鄉)
     const TOWNSHIPS = [
       { id: 'nantou', name: '南投市' }, { id: 'caotun', name: '草屯鎮' }, { id: 'puli', name: '埔里鎮' },
       { id: 'zhushan', name: '竹山鎮' }, { id: 'jiji', name: '集集鎮' }, { id: 'mingjian', name: '名間鄉' },
@@ -342,23 +389,23 @@
       { id: 'renai', name: '仁愛鄉' }
     ];
 
-    // 點亮順序 (仁愛鄉 -> 南投市)
     const LIGHTING_ORDER = [
       'renai', 'xinyi', 'shuili', 'guoxing', 'yuchi', 'zhongliao', 'lugu', 
       'mingjian', 'jiji', 'zhushan', 'puli', 'caotun', 'nantou'
     ];
 
     const ROLE_NAMES = {
-      admin: '啟動者',
+      admin: '管理者',
       lighter: '貴賓',
-      viewer: '觀眾'
+      mayor: '縣長'
     };
 
     let state = {
-      role: null, // 'admin', 'lighter', 'viewer'
+      role: null, 
       globalProgress: 0,
       litCount: 0,
       isComplete: false,
+      bgmPlaying: false, // 記錄背景音樂狀態
       useFirebase: false,
       user: null,
       confettiInterval: null
@@ -368,35 +415,51 @@
 
     const SVGS = {
       tablet: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 md:w-8 md:h-8 text-slate-400 mb-1 md:mb-2"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>`,
-      sparkles: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 md:w-10 md:h-10 text-white mb-1 md:mb-2 drop-shadow-md"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>`
     };
 
     // ==========================================
-    // 1. 身分選擇與音效解鎖
+    // 1. 身分選擇與音效解鎖 (🌟 解決不同步的關鍵)
     // ==========================================
     window.selectRole = (role) => {
       state.role = role;
       document.getElementById('role-modal').classList.add('hidden');
       
-      // 隱藏所有面板，根據身分開啟對應面板
+      // 隱藏所有面板，交由資料同步後 processNewState 判斷
       document.getElementById('panel-lighter').classList.add('hidden');
       document.getElementById('panel-admin').classList.add('hidden');
-      document.getElementById('panel-spacer').classList.add('hidden'); // 重置佔位區塊
+      document.getElementById('modal-right-panel').classList.add('hidden');
+      document.getElementById('panel-spacer').classList.add('hidden'); 
+      document.querySelectorAll('.admin-only-btn').forEach(el => el.classList.add('hidden'));
       
-      if (role === 'lighter') {
-        document.getElementById('panel-lighter').classList.remove('hidden');
-        document.getElementById('panel-spacer').classList.remove('hidden'); // 顯示佔位以防按鈕遮擋
-      }
       if (role === 'admin') {
-        document.getElementById('panel-admin').classList.remove('hidden');
         document.querySelectorAll('.admin-only-btn').forEach(el => el.classList.remove('hidden'));
-        document.getElementById('panel-spacer').classList.remove('hidden'); // 顯示佔位以防按鈕遮擋
       }
       
-      try {
-        clickAudio.play().then(() => { clickAudio.pause(); clickAudio.currentTime = 0; }).catch(()=>{});
-        celebrationAudio.play().then(() => { celebrationAudio.pause(); celebrationAudio.currentTime = 0; }).catch(()=>{});
-      } catch(e) {}
+      // 🔊 強制解鎖音效：在使用者點擊選擇身分的瞬間，以靜音模式觸發播放，取得瀏覽器許可
+      if (!isAudioUnlocked) {
+        const unlock = (audioObj) => {
+          audioObj.muted = true;
+          const playPromise = audioObj.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              // 如果是背景音樂且遠端已經指示正在播放，就直接解除靜音，不暫停
+              if (audioObj === bgmAudio && state.bgmPlaying) {
+                audioObj.muted = false;
+              } else {
+                audioObj.pause();
+                audioObj.currentTime = 0;
+                audioObj.muted = false;
+              }
+            }).catch(() => {});
+          }
+        };
+        
+        unlock(clickAudio);
+        unlock(tapAudio);
+        unlock(celebrationAudio);
+        unlock(bgmAudio);
+        isAudioUnlocked = true;
+      }
       
       initFirebase();
     };
@@ -404,7 +467,6 @@
     function fallbackToOffline(errorMessage) {
       state.useFirebase = false;
       document.getElementById('network-status').innerText = errorMessage;
-      document.getElementById('network-status').classList.replace('text-[#317EE0]', 'text-slate-500');
       document.getElementById('loading-spinner').classList.add('hidden');
       document.getElementById('tablet-grid').classList.remove('hidden');
       renderGrid();
@@ -442,7 +504,7 @@
     }
 
     // ==========================================
-    // 2. 核心邏輯：接收並換算進度
+    // 2. 核心邏輯：接收並換算進度，控制面板與音樂
     // ==========================================
     function setupFirestoreListener() {
       const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tablets', 'shared_state');
@@ -450,7 +512,7 @@
         document.getElementById('loading-spinner').classList.add('hidden');
         document.getElementById('tablet-grid').classList.remove('hidden');
         
-        let data = docSnap.exists() ? docSnap.data() : { clicks: 0, isTriggered: false };
+        let data = docSnap.exists() ? docSnap.data() : { clicks: 0, isTriggered: false, bgmPlaying: false };
         processNewState(data);
       }, () => fallbackToOffline('單機模式 (讀取失敗)'));
     }
@@ -458,43 +520,112 @@
     function processNewState(data) {
       const clicks = data.clicks || 0;
       const isTriggered = data.isTriggered || false;
+      const bgmPlaying = data.bgmPlaying || false;
       
-      // 計算進度：貴賓最高推到 99%，啟動者按下才變 100%
       let newProgress = isTriggered ? 100 : Math.min(99, clicks * 0.5);
-      
-      // 每 7.6% 亮一台，最高 13 台
       let newLitCount = Math.min(13, Math.floor(newProgress / 7.6));
 
-      // 若有新的平板亮起，全場播放音效！
-      if (newLitCount > state.litCount) {
-        playClickSound();
-      }
+      if (newLitCount > state.litCount) playClickSound();
 
       state.globalProgress = newProgress;
       state.litCount = newLitCount;
+      state.bgmPlaying = bgmPlaying;
       
       renderGrid();
       updateProgressUI();
 
       // ==========================================
-      // 控制 100% 慶祝視窗 與 99% 地圖視窗的顯示邏輯
+      // 控制背景音樂 (BGM) 的同步播放
+      // ==========================================
+      if (bgmPlaying && !isTriggered) {
+        if (bgmAudio.paused) {
+          bgmAudio.play().catch(e => console.warn('瀏覽器阻擋背景音樂播放，請確認是否有互動過', e));
+        }
+        document.querySelectorAll('.text-bgm-label').forEach(el => el.innerText = '⏸️ 暫停音樂');
+      } else {
+        if (!bgmAudio.paused) {
+          bgmAudio.pause();
+        }
+        document.querySelectorAll('.text-bgm-label').forEach(el => el.innerText = '▶️ 播放音樂');
+      }
+
+      // ==========================================
+      // 控制 100% 慶祝視窗 與 99% 地圖視窗
       // ==========================================
       const mapModal = document.getElementById('map-modal');
 
       if (newProgress === 100 && !state.isComplete) {
         state.isComplete = true;
-        mapModal.classList.add('hidden'); // 確保關閉地圖
+        mapModal.classList.add('hidden');
         window.showCelebrationModal();
       } else if (newProgress < 100 && state.isComplete) {
         state.isComplete = false;
         window.hideCelebrationModal();
       }
 
-      // 如果達到 99% 且尚未觸發 100%，則顯示地圖視窗
+      // 如果達到 99% 且尚未觸發 100%，顯示地圖視窗
       if (newProgress === 99 && !isTriggered) {
         mapModal.classList.remove('hidden');
       } else {
         mapModal.classList.add('hidden');
+      }
+
+      // ==========================================
+      // 依照身分動態隱藏/顯示操作按鈕
+      // ==========================================
+      const modalRightPanel = document.getElementById('modal-right-panel');
+      const panelMayor = document.getElementById('panel-mayor');
+      const panelAdminModal = document.getElementById('panel-admin-modal');
+      const panelAdminBottom = document.getElementById('panel-admin');
+      const panelLighter = document.getElementById('panel-lighter');
+      const panelSpacer = document.getElementById('panel-spacer');
+
+      // 重置右側面板狀態
+      modalRightPanel.classList.add('hidden');
+      modalRightPanel.classList.remove('flex');
+      panelMayor.classList.add('hidden');
+      panelAdminModal.classList.add('hidden');
+      panelAdminModal.classList.remove('flex');
+
+      // 99% 時，所有人都要能看到右側面板，藉此顯示標題文字！
+      if (newProgress === 99 && !isTriggered) {
+        modalRightPanel.classList.remove('hidden');
+        modalRightPanel.classList.add('flex');
+      }
+
+      if (state.role === 'mayor') {
+        panelAdminBottom.classList.add('hidden');
+        panelSpacer.classList.add('hidden');
+        // 99% 時，縣長顯示地圖右側的達標按鈕
+        if (newProgress === 99 && !isTriggered) {
+          panelMayor.classList.remove('hidden');
+        }
+      } else if (state.role === 'admin') {
+        // 99% 時，管理者顯示地圖右側的備用控制按鈕，隱藏主畫面底部的按鈕
+        if (newProgress === 99 && !isTriggered) {
+          panelAdminModal.classList.remove('hidden');
+          panelAdminModal.classList.add('flex');
+          panelAdminBottom.classList.add('hidden');
+          panelSpacer.classList.add('hidden');
+        } else {
+          panelAdminBottom.classList.remove('hidden');
+          panelSpacer.classList.remove('hidden');
+        }
+      } else {
+        // 貴賓與其他角色，隱藏管理者及右側的按鈕，只保留標題
+        panelAdminBottom.classList.add('hidden');
+        panelSpacer.classList.add('hidden');
+      }
+
+      // 控制貴賓「點擊進度」按鈕：只要大於等於 99%，就自動消失把畫面讓給地圖
+      if (state.role === 'lighter') {
+        if (newProgress >= 99) {
+          panelLighter.classList.add('hidden');
+        } else {
+          panelLighter.classList.remove('hidden');
+        }
+      } else {
+        panelLighter.classList.add('hidden');
       }
     }
 
@@ -512,10 +643,8 @@
         rowDiv.className = 'flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 lg:gap-5 w-full';
         
         rowTowns.forEach(town => {
-          // 根據照明順序陣列的 index 來判斷這台是否該亮
           const lightingIndex = LIGHTING_ORDER.indexOf(town.id);
           const isLit = lightingIndex < state.litCount;
-          
           const btn = document.createElement('div');
           
           let btnClasses = isLit 
@@ -525,7 +654,6 @@
           btn.className = `group relative flex flex-col items-center justify-center w-[100px] h-[140px] sm:w-[110px] sm:h-[155px] md:w-[115px] md:h-[160px] lg:w-[130px] lg:h-[185px] rounded-[1rem] md:rounded-[1.25rem] transition-all duration-500 ${btnClasses}`;
 
           let innerBg = isLit ? 'bg-gradient-to-br from-[#317EE0] to-[#2563B0]' : 'bg-slate-800';
-          
           let innerHtml = isLit ? `
             <div class="absolute inset-0 bg-white/10 animate-pulse"></div>
             <img src="nantoulogo_lightblue.png" class="w-10 h-10 md:w-12 md:h-12 object-contain mb-1 md:mb-2 z-10 drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]" alt="Logo" onerror="this.style.display='none'">
@@ -551,7 +679,6 @@
     function updateProgressUI() {
       const percent = state.globalProgress;
       const displayPercent = percent % 1 === 0 ? percent : percent.toFixed(1);
-      
       document.getElementById('progress-bar-fill').style.width = `${percent}%`;
       document.getElementById('progress-text').innerText = `完成度 ${displayPercent}% (${state.litCount}/13)`;
 
@@ -562,19 +689,31 @@
     }
 
     // ==========================================
-    // 4. 按鈕操作邏輯 (點燈、達標、重置)
+    // 4. 按鈕操作邏輯 (點燈、達標、音樂控制、重置)
     // ==========================================
+    
+    window.handleToggleBGM = async () => {
+      const isPlaying = state.bgmPlaying;
+      if (state.useFirebase && state.user) {
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tablets', 'shared_state');
+        try {
+          await setDoc(docRef, { bgmPlaying: !isPlaying }, { merge: true });
+        } catch(e) {}
+      } else {
+        processNewState({ clicks: state.globalProgress / 0.5, isTriggered: state.isComplete, bgmPlaying: !isPlaying });
+      }
+    };
+
     window.handleLighterClick = async () => {
-      // 若已達99%，點擊無效
       if (state.globalProgress >= 99) return;
-      
+      playTapSound();
       if (state.useFirebase && state.user) {
         const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tablets', 'shared_state');
         try {
           await setDoc(docRef, { clicks: increment(1) }, { merge: true });
         } catch(e) {}
       } else {
-        processNewState({ clicks: (state.globalProgress / 0.5) + 1, isTriggered: false });
+        processNewState({ clicks: (state.globalProgress / 0.5) + 1, isTriggered: false, bgmPlaying: state.bgmPlaying });
       }
     };
 
@@ -582,41 +721,37 @@
       if (state.useFirebase && state.user) {
         const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tablets', 'shared_state');
         try {
-          // 啟動者專屬核彈鍵：直接將觸發狀態設為 true (100%)
           await setDoc(docRef, { isTriggered: true }, { merge: true });
         } catch(e) {}
       } else {
-        processNewState({ clicks: 0, isTriggered: true });
+        processNewState({ clicks: 0, isTriggered: true, bgmPlaying: state.bgmPlaying });
       }
     };
 
     window.handleReset = async () => {
       stopCelebrationSound(); 
       stopConfetti(); 
-
       if (state.useFirebase && state.user) {
         const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tablets', 'shared_state');
         try { 
-          await setDoc(docRef, { clicks: 0, isTriggered: false }); 
+          // 重置時一併關閉背景音樂
+          await setDoc(docRef, { clicks: 0, isTriggered: false, bgmPlaying: false }); 
         } catch (e) {}
       } else {
-        processNewState({ clicks: 0, isTriggered: false });
+        processNewState({ clicks: 0, isTriggered: false, bgmPlaying: false });
       }
     };
 
-    // 新增：退回 99% 啟動畫面的功能
     window.handleBackTo99 = async () => {
       stopCelebrationSound(); 
       stopConfetti(); 
-
       if (state.useFirebase && state.user) {
         const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tablets', 'shared_state');
         try { 
-          // 198 次點擊 * 0.5% = 99% (退回等待啟動狀態)
-          await setDoc(docRef, { clicks: 198, isTriggered: false }); 
+          await setDoc(docRef, { clicks: 198, isTriggered: false, bgmPlaying: state.bgmPlaying }); 
         } catch (e) {}
       } else {
-        processNewState({ clicks: 198, isTriggered: false });
+        processNewState({ clicks: 198, isTriggered: false, bgmPlaying: state.bgmPlaying });
       }
     };
 
@@ -634,9 +769,7 @@
     window.showCelebrationModal = () => {
       const modal = document.getElementById('celebration-modal');
       modal.classList.remove('hidden');
-      
       playCelebrationSound();
-      
       const duration = 25 * 1000;
       const animationEnd = Date.now() + duration;
       const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
