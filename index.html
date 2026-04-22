@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>南投縣生生有平板達標宣布活動</title>
-
-  <!-- 加入網頁標籤圖示 (Favicon) -->
-  <link rel="icon" href="42531_f5.png" type="image/png">
+  
+  <!-- 加入網頁標籤圖示 (Favicon) - 已加上強制更新參數與雙重標籤確保相容性 -->
+  <link rel="icon" href="42531_f5.png?v=2" type="image/png">
+  <link rel="shortcut icon" href="42531_f5.png?v=2" type="image/png">
 
   <!-- 1. 引入 Google Fonts：思源黑體 (Noto Sans TC) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
 
   <script src="https://cdn.tailwindcss.com"></script>
-
+  
   <!-- 2. 設定 Tailwind 使用思源黑體作為預設字體 -->
   <script>
     tailwind.config = {
@@ -32,105 +32,50 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     @keyframes popIn {
-      0% {
-        transform: scale(0.8);
-        opacity: 0;
-      }
-
-      80% {
-        transform: scale(1.05);
-        opacity: 1;
-      }
-
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
+      0% { transform: scale(0.8); opacity: 0; }
+      80% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
     }
-
     @keyframes float-particle {
-
-      0%,
-      100% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0.5;
-      }
-
-      50% {
-        transform: translateY(-20px) rotate(180deg);
-        opacity: 1;
-      }
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.5; }
+      50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
     }
-
+    
     /* 進度條推進時的 Q彈發光特效 (科技藍 #317EE0) */
     @keyframes progressBump {
-      0% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.05);
-        box-shadow: 0 0 20px rgba(49, 126, 224, 0.8);
-        border-color: rgba(49, 126, 224, 1);
-      }
-
-      100% {
-        transform: scale(1);
-      }
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(49, 126, 224, 0.8); border-color: rgba(49, 126, 224, 1); }
+      100% { transform: scale(1); }
     }
-
-    /* 南投100%標籤的閃動強調特效 (活力橘 #FF7145) */
+    
+    /* 南投100%達標標籤的閃動強調特效 (活力橘 #FF7145) */
     @keyframes badgePulse {
-
-      0%,
-      100% {
-        transform: rotate(-2deg) scale(1);
-        filter: brightness(1);
-        box-shadow: 0 0 15px rgba(255, 113, 69, 0.6);
-      }
-
-      50% {
-        transform: rotate(-2deg) scale(1.1);
-        filter: brightness(1.05);
-        box-shadow: 0 0 40px rgba(255, 113, 69, 1), inset 0 0 15px rgba(255, 255, 255, 0.6);
-      }
+      0%, 100% { transform: rotate(-2deg) scale(1); filter: brightness(1); box-shadow: 0 0 15px rgba(255, 113, 69, 0.6); }
+      50% { transform: rotate(-2deg) scale(1.1); filter: brightness(1.05); box-shadow: 0 0 40px rgba(255, 113, 69, 1), inset 0 0 15px rgba(255, 255, 255, 0.6); }
     }
-
+    
     /* 點亮平板的強烈閃爍發光特效 (科技藍 #317EE0) */
     @keyframes litTabletGlow {
-
-      0%,
-      100% {
-        box-shadow: 0 5px 15px rgba(49, 126, 224, 0.5);
-        filter: brightness(1);
-      }
-
-      50% {
-        box-shadow: 0 0 30px rgba(49, 126, 224, 1);
-        filter: brightness(1.15);
-      }
+      0%, 100% { box-shadow: 0 5px 15px rgba(49, 126, 224, 0.5); filter: brightness(1); }
+      50% { box-shadow: 0 0 30px rgba(49, 126, 224, 1); filter: brightness(1.15); }
     }
 
     /* 跑進度條紋特效 */
     @keyframes progress-stripes-anim {
-      from {
-        background-position: 1.5rem 0;
-      }
-
-      to {
-        background-position: 0 0;
-      }
+      from { background-position: 1.5rem 0; }
+      to { background-position: 0 0; }
     }
-
     .progress-stripes {
-      background-image: linear-gradient(-45deg,
-          rgba(255, 255, 255, 0.25) 25%,
-          transparent 25%,
-          transparent 50%,
-          rgba(255, 255, 255, 0.25) 50%,
-          rgba(255, 255, 255, 0.25) 75%,
-          transparent 75%,
-          transparent);
+      background-image: linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.25) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.25) 50%,
+        rgba(255, 255, 255, 0.25) 75%,
+        transparent 75%,
+        transparent
+      );
       background-size: 1.5rem 1.5rem;
       animation: progress-stripes-anim 1s linear infinite;
     }
@@ -140,80 +85,57 @@
       color: #317EE0;
       -webkit-text-stroke: 4px white;
       paint-order: stroke fill;
-      filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.1));
+      filter: drop-shadow(0 3px 4px rgba(0,0,0,0.1));
     }
-
     @supports not (paint-order: stroke fill) {
       .title-outline {
         -webkit-text-stroke: 0;
         text-shadow:
           -3px -3px 0 #fff, 0 -3px 0 #fff, 3px -3px 0 #fff,
-          3px 0 0 #fff, 3px 3px 0 #fff, 0 3px 0 #fff,
-          -3px 3px 0 #fff, -3px 0 0 #fff;
+           3px  0   0 #fff, 3px  3px 0 #fff, 0  3px 0 #fff,
+          -3px  3px 0 #fff, -3px  0   0 #fff;
       }
     }
-
-    .animate-pop-in {
-      animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-
-    .animate-progress-bump {
-      animation: progressBump 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .animate-badge-pulse {
-      animation: badgePulse 1.2s ease-in-out infinite;
-    }
-
-    .animate-lit-tablet {
-      animation: litTabletGlow 1.5s ease-in-out infinite;
-    }
-
+    
+    .animate-pop-in { animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    .animate-progress-bump { animation: progressBump 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .animate-badge-pulse { animation: badgePulse 1.2s ease-in-out infinite; }
+    .animate-lit-tablet { animation: litTabletGlow 1.5s ease-in-out infinite; }
+    
     /* 適合亮色系的網格背景 (科技藍 #317EE0) */
     .grid-bg {
       background-size: 40px 40px;
-      background-image:
+      background-image: 
         linear-gradient(to right, rgba(49, 126, 224, 0.08) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(49, 126, 224, 0.08) 1px, transparent 1px);
     }
   </style>
 </head>
-
-<body
-  class="bg-gradient-to-br from-sky-50 via-blue-50 to-indigo-50 font-sans text-slate-800 overflow-x-hidden relative min-h-screen flex flex-col">
-
+<body class="bg-gradient-to-br from-sky-50 via-blue-50 to-indigo-50 font-sans text-slate-800 overflow-x-hidden relative min-h-screen flex flex-col">
+  
   <div class="fixed inset-0 z-0 pointer-events-none flex items-center justify-center opacity-30 mix-blend-multiply">
-    <img src="nantoumap4.png" alt="南投縣地圖" class="w-full h-full object-contain p-0 md:p-4 scale-110 md:scale-105"
-      onerror="this.style.display='none'">
+    <img src="nantoumap4.png" alt="南投縣地圖" class="w-full h-full object-contain p-0 md:p-4 scale-110 md:scale-105" onerror="this.style.display='none'">
   </div>
 
   <div class="absolute inset-0 grid-bg pointer-events-none z-0"></div>
-  <div
-    class="absolute top-0 left-0 w-full h-[300px] bg-gradient-to-b from-white/70 to-transparent pointer-events-none z-0">
-  </div>
+  <div class="absolute top-0 left-0 w-full h-[300px] bg-gradient-to-b from-white/70 to-transparent pointer-events-none z-0"></div>
 
   <header class="relative z-10 pt-4 pb-2 px-4 text-center">
     <h1 class="text-4xl md:text-6xl font-black mb-3 tracking-widest title-outline flex items-baseline justify-center">
-      <span
-        class="text-[1.4em] inline-block mr-1 md:mr-2 leading-none transform translate-y-1 md:translate-y-2">投</span>入數位
-      學力全開
+      <!-- 替換此處：用 title_tou.png 取代原本的 span 文字，並加上白色外框濾鏡 (已調細厚度) -->
+      <img src="title_tou.png" alt="投" class="h-[1.2em] md:h-[1.3em] inline-block mr-1 md:mr-3 transform translate-y-1 md:translate-y-2" style="filter: drop-shadow(1.5px 1.5px 0 white) drop-shadow(-1.5px -1.5px 0 white) drop-shadow(1.5px -1.5px 0 white) drop-shadow(-1.5px 1.5px 0 white) drop-shadow(0 3px 4px rgba(0,0,0,0.1));" onerror="this.style.display='none'">入數位 學力全開
     </h1>
     <p class="text-slate-600 text-base md:text-lg font-medium max-w-2xl mx-auto leading-snug">
-      生生有平板，讓每個角落都充滿學習的亮光！<br />
+      生生有平板，讓每個角落都充滿學習的亮光！<br/>
       <span id="network-status" class="text-sm text-[#317EE0] font-bold mt-1 inline-block">系統連線中...</span>
     </p>
-
-    <div id="progress-container"
-      class="mt-4 max-w-xl mx-auto bg-white rounded-full h-8 md:h-10 border-2 border-[#317EE0]/30 p-1.5 relative shadow-inner overflow-hidden transition-all duration-300 z-20">
-      <div id="progress-bar-fill"
-        class="h-full bg-[#317EE0] rounded-full transition-all duration-1000 ease-out relative shadow-sm overflow-hidden"
-        style="width: 0%;">
-        <div class="absolute inset-0 progress-stripes"></div>
-        <div class="absolute top-0 right-0 bottom-0 w-6 bg-gradient-to-l from-white/80 to-transparent rounded-r-full">
-        </div>
+    
+    <div id="progress-container" class="mt-4 max-w-xl mx-auto bg-white rounded-full h-8 md:h-10 border-2 border-[#317EE0]/30 p-1.5 relative shadow-inner overflow-hidden transition-all duration-300 z-20">
+      <div id="progress-bar-fill" class="h-full bg-[#317EE0] rounded-full transition-all duration-1000 ease-out relative shadow-sm overflow-hidden" style="width: 0%;">
+         <div class="absolute inset-0 progress-stripes"></div>
+         <div class="absolute top-0 right-0 bottom-0 w-6 bg-gradient-to-l from-white/80 to-transparent rounded-r-full"></div>
       </div>
-      <div id="progress-text"
-        class="absolute inset-0 flex items-center justify-center text-sm md:text-lg font-black text-slate-700 drop-shadow-[0_1px_2px_rgba(255,255,255,1)]">
+      <div id="progress-text" class="absolute inset-0 flex items-center justify-center text-sm md:text-lg font-black text-slate-700 drop-shadow-[0_1px_2px_rgba(255,255,255,1)]">
         完成度 0% (0/13)
       </div>
     </div>
@@ -221,122 +143,61 @@
 
   <main class="relative z-10 max-w-6xl mx-auto px-2 md:px-4 pb-10 flex-grow">
     <div id="loading-spinner" class="flex flex-col items-center justify-center py-20 text-[#317EE0]">
-      <svg class="w-12 h-12 animate-pulse mb-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-        stroke-linejoin="round">
-        <path d="M5 12.55a11 11 0 0 1 14.08 0" />
-        <path d="M1.42 9a16 16 0 0 1 21.16 0" />
-        <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
-        <line x1="12" x2="12.01" y1="20" y2="20" />
-      </svg>
+      <svg class="w-12 h-12 animate-pulse mb-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" x2="12.01" y1="20" y2="20"/></svg>
       <p class="text-lg font-bold tracking-widest">系統初始化中...</p>
     </div>
-
+    
     <div id="tablet-grid" class="flex flex-col items-center gap-3 md:gap-4 mt-4 hidden">
-    </div>
-
+      </div>
+    
     <div id="control-panel" class="text-center mt-8 hidden">
-      <button onclick="window.showCelebrationModal()"
-        class="px-6 py-2 bg-[#317EE0] hover:bg-[#2563B0] text-white rounded-full font-bold mr-4 transition-all shadow-md">再次觀看慶祝</button>
-      <button onclick="window.handleReset()"
-        class="px-6 py-2 bg-white text-slate-600 border border-slate-300 hover:bg-slate-50 rounded-full font-bold transition-all shadow-sm">重新點亮
-        (重置)</button>
+      <button onclick="window.showCelebrationModal()" class="px-6 py-2 bg-[#317EE0] hover:bg-[#2563B0] text-white rounded-full font-bold mr-4 transition-all shadow-md">再次觀看慶祝</button>
+      <button onclick="window.handleReset()" class="px-6 py-2 bg-white text-slate-600 border border-slate-300 hover:bg-slate-50 rounded-full font-bold transition-all shadow-sm">重新點亮 (重置)</button>
     </div>
   </main>
 
   <footer class="relative z-10 w-full flex justify-center items-center pb-6 md:pb-8 mt-auto">
-    <img src="42530_f6.png" alt="南投縣政府"
-      class="h-8 md:h-12 object-contain opacity-90 drop-shadow-md hover:opacity-100 transition-opacity"
-      onerror="this.style.display='none'">
+    <!-- 第一頁底部的縣府 Logo 更新為 42530_f6.png -->
+    <img src="42530_f6.png" alt="南投縣政府" class="h-8 md:h-12 object-contain opacity-90 drop-shadow-md hover:opacity-100 transition-opacity" onerror="this.style.display='none'">
   </footer>
 
-  <div id="celebration-modal"
-    class="fixed inset-0 z-50 items-center justify-center bg-slate-900/80 backdrop-blur-md p-2 md:p-6 hidden flex overflow-hidden">
+  <div id="celebration-modal" class="fixed inset-0 z-50 items-center justify-center bg-slate-900/80 backdrop-blur-md p-2 md:p-6 hidden flex overflow-hidden">
+    
+    <div class="relative bg-white border-4 md:border-8 border-[#317EE0] rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] shadow-[0_0_80px_rgba(49,126,224,0.5)] max-w-7xl w-[96vw] lg:w-[90vw] h-[95vh] text-center animate-pop-in flex flex-col items-center overflow-y-auto overflow-x-hidden pb-16 md:pb-6">
+      
+      <div class="absolute top-10 left-10 text-[#317EE0] animate-[float-particle_4s_ease-in-out_infinite] z-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 lg:w-10 lg:h-10"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <div class="absolute bottom-40 right-12 md:bottom-48 md:right-16 text-[#FF7145] animate-[float-particle_5s_ease-in-out_infinite_1s] z-10"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 lg:w-14 lg:h-14"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg></div>
+      <div class="absolute top-20 right-1/4 text-blue-300 animate-[float-particle_6s_ease-in-out_infinite_0.5s] z-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 lg:w-8 lg:h-8"><rect width="16" height="16" x="4" y="4" rx="2" ry="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg></div>
 
-    <div
-      class="relative bg-white border-4 md:border-8 border-[#317EE0] rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] shadow-[0_0_80px_rgba(49,126,224,0.5)] max-w-7xl w-[96vw] lg:w-[90vw] h-[95vh] text-center animate-pop-in flex flex-col items-center overflow-y-auto overflow-x-hidden pb-16 md:pb-6">
-
-      <div class="absolute top-10 left-10 text-[#317EE0] animate-[float-particle_4s_ease-in-out_infinite] z-0"><svg
-          xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="w-6 h-6 lg:w-10 lg:h-10">
-          <polygon
-            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-        </svg></div>
-      <div
-        class="absolute bottom-40 right-12 md:bottom-48 md:right-16 text-[#FF7145] animate-[float-particle_5s_ease-in-out_infinite_1s] z-10">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="w-8 h-8 lg:w-14 lg:h-14">
-          <path
-            d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-          <path d="M5 3v4" />
-          <path d="M19 17v4" />
-          <path d="M3 5h4" />
-          <path d="M17 19h4" />
-        </svg>
-      </div>
-      <div class="absolute top-20 right-1/4 text-blue-300 animate-[float-particle_6s_ease-in-out_infinite_0.5s] z-0">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="w-5 h-5 lg:w-8 lg:h-8">
-          <rect width="16" height="16" x="4" y="4" rx="2" ry="2" />
-          <rect width="6" height="6" x="9" y="9" rx="1" />
-          <path d="M15 2v2" />
-          <path d="M15 20v2" />
-          <path d="M2 15h2" />
-          <path d="M2 9h2" />
-          <path d="M20 15h2" />
-          <path d="M20 9h2" />
-          <path d="M9 2v2" />
-          <path d="M9 20v2" />
-        </svg>
-      </div>
-
-      <div
-        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-blue-100/60 blur-[100px] rounded-full pointer-events-none z-0">
-      </div>
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-blue-100/60 blur-[100px] rounded-full pointer-events-none z-0"></div>
 
       <div class="flex flex-col items-center my-auto w-full shrink min-h-0 pt-4 md:pt-0 z-30">
-
+        
         <div class="flex-1 flex justify-center items-center w-full px-4 lg:px-8 shrink min-h-0">
-          <img src="image_4a819c.png" alt="生生有平板慶祝畫面" onerror="this.style.display='none'"
-            class="max-w-full max-h-full object-contain rounded-[1rem] md:rounded-2xl lg:rounded-3xl shadow-2xl border-4 md:border-[6px] border-white bg-slate-100">
+          <img src="image_4a819c.png" alt="生生有平板慶祝畫面" onerror="this.style.display='none'" class="max-w-full max-h-full object-contain rounded-[1rem] md:rounded-2xl lg:rounded-3xl shadow-2xl border-4 md:border-[6px] border-white bg-slate-100">
         </div>
 
         <div class="shrink-0 flex flex-col items-center pt-3 md:pt-5 lg:pt-6 z-40">
-          <h2
-            class="text-4xl md:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black text-transparent bg-clip-text bg-gradient-to-r from-[#317EE0] to-[#5A9CF0] tracking-tight leading-tight drop-shadow-md m-0">
+          <h2 class="text-4xl md:text-6xl lg:text-[5.5rem] xl:text-[6.5rem] font-black text-transparent bg-clip-text bg-gradient-to-r from-[#317EE0] to-[#5A9CF0] tracking-tight leading-tight drop-shadow-md m-0">
             生生有平板
           </h2>
-
-          <div
-            class="inline-block bg-gradient-to-r from-[#FF7145] to-[#FF8A66] text-white px-8 py-3 md:px-12 md:py-4 lg:px-20 lg:py-6 rounded-full text-3xl md:text-5xl lg:text-6xl xl:text-[5.5rem] font-extrabold transform -rotate-2 border-4 lg:border-[6px] border-[#FFD0C2] animate-badge-pulse shadow-lg mt-4 lg:mt-6 m-0">
-            南投 100%
+          
+          <!-- 更改為「南投 100%達標」，並微調了字體大小與內距確保完美適應 -->
+          <div class="inline-block bg-gradient-to-r from-[#FF7145] to-[#FF8A66] text-white px-6 py-3 md:px-10 md:py-4 lg:px-16 lg:py-5 rounded-full text-2xl md:text-4xl lg:text-5xl xl:text-[4.5rem] font-extrabold transform -rotate-2 border-4 lg:border-[6px] border-[#FFD0C2] animate-badge-pulse shadow-lg mt-4 lg:mt-6 m-0">
+            南投 100%達標
           </div>
 
           <div class="flex flex-col items-center justify-center mt-3 lg:mt-6 mb-3 md:mb-4 lg:mb-6 z-40">
-            <img src="42530_f6.png" alt="南投縣政府"
-              class="h-4 md:h-6 lg:h-8 xl:h-10 object-contain opacity-90 drop-shadow-md"
-              onerror="this.style.display='none'">
+            <!-- 慶祝視窗的縣府 Logo 更新為 42530_f6.png -->
+            <img src="42530_f6.png" alt="南投縣政府" class="h-4 md:h-6 lg:h-8 xl:h-10 object-contain opacity-90 drop-shadow-md" onerror="this.style.display='none'">
           </div>
         </div>
 
       </div>
 
       <div class="absolute bottom-4 left-4 md:bottom-6 md:left-6 flex flex-col items-start gap-1.5 z-50">
-        <button onclick="window.handleReset(); window.hideCelebrationModal();"
-          class="px-4 py-2 md:px-6 md:py-2.5 bg-[#317EE0] hover:bg-[#2563B0] text-white font-bold rounded-full transition-all hover:scale-105 shadow-md flex items-center gap-1.5 md:gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="w-4 h-4 md:w-5 md:h-5">
-            <path
-              d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-            <path d="M5 3v4" />
-            <path d="M19 17v4" />
-            <path d="M3 5h4" />
-            <path d="M17 19h4" />
-          </svg>
+        <button onclick="window.handleReset(); window.hideCelebrationModal();" class="px-4 py-2 md:px-6 md:py-2.5 bg-[#317EE0] hover:bg-[#2563B0] text-white font-bold rounded-full transition-all hover:scale-105 shadow-md flex items-center gap-1.5 md:gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 md:w-5 md:h-5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
           <span class="text-xs md:text-sm lg:text-base">重置</span>
         </button>
         <div class="text-[10px] md:text-xs text-slate-400 opacity-80 font-light tracking-wider ml-2 md:ml-3 mt-1">
@@ -345,15 +206,14 @@
       </div>
 
       <div class="absolute bottom-4 right-4 md:bottom-6 md:right-6 flex flex-col items-end gap-1.5 z-50">
-        <button onclick="window.hideCelebrationModal()"
-          class="px-4 py-2 md:px-6 md:py-2.5 bg-white hover:bg-slate-50 text-slate-600 font-bold rounded-full transition-colors border border-slate-300 shadow-md">
+        <button onclick="window.hideCelebrationModal()" class="px-4 py-2 md:px-6 md:py-2.5 bg-white hover:bg-slate-50 text-slate-600 font-bold rounded-full transition-colors border border-slate-300 shadow-md">
           <span class="text-xs md:text-sm lg:text-base">關閉視窗</span>
         </button>
         <div class="text-[10px] md:text-xs text-slate-400 opacity-80 font-light tracking-wider mr-2 md:mr-3 mt-1">
           Music by Pixabay
         </div>
       </div>
-
+      
     </div>
   </div>
 
@@ -363,17 +223,17 @@
     import { getFirestore, doc, setDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
     // 🎵 載入自訂音效
-    const clickAudio = new Audio('click.mp3');
-    const celebrationAudio = new Audio('party.mp3');
+    const clickAudio = new Audio('click.mp3');       
+    const celebrationAudio = new Audio('party.mp3'); 
 
     function playClickSound() {
       try {
-        clickAudio.currentTime = 0;
+        clickAudio.currentTime = 0; 
         const playPromise = clickAudio.play();
         if (playPromise !== undefined) {
           playPromise.catch(error => { console.warn("點擊音效播放遭阻擋或檔案遺失"); });
         }
-      } catch (e) { }
+      } catch (e) {}
     }
 
     function playCelebrationSound() {
@@ -383,18 +243,18 @@
         if (playPromise !== undefined) {
           playPromise.catch(error => { console.warn("慶祝音效播放遭阻擋或檔案遺失"); });
         }
-      } catch (e) { }
+      } catch (e) {}
     }
 
     function stopCelebrationSound() {
       try {
         celebrationAudio.pause();
         celebrationAudio.currentTime = 0;
-      } catch (e) { }
+      } catch (e) {}
     }
 
     // ==========================================
-    // 🔥 Firebase 設定碼
+    // 🔥 步驟四：在這裡填入您的 Firebase 設定碼
     // ==========================================
     const myFirebaseConfig = {
       apiKey: "AIzaSyCWVUoWYFWBAqYYJjLfD1iLumZWTfuYMwg",
@@ -408,11 +268,11 @@
     // ==========================================
 
     const TOWNSHIPS = [
-      { id: 'nantou', name: '南投市' }, { id: 'caotun', name: '草屯鎮' }, { id: 'zhongliao', name: '中寮鄉' },
-      { id: 'mingjian', name: '名間鄉' }, { id: 'jiji', name: '集集鎮' }, { id: 'shuili', name: '水里鄉' },
-      { id: 'xinyi', name: '信義鄉' }, { id: 'puli', name: '埔里鎮' }, { id: 'guoxing', name: '國姓鄉' },
-      { id: 'yuchi', name: '魚池鄉' }, { id: 'renai', name: '仁愛鄉' }, { id: 'zhushan', name: '竹山鎮' },
-      { id: 'lugu', name: '鹿谷鄉' }
+      { id: 'nantou', name: '南投市' }, { id: 'caotun', name: '草屯鎮' }, { id: 'puli', name: '埔里鎮' },
+      { id: 'zhushan', name: '竹山鎮' }, { id: 'jiji', name: '集集鎮' }, { id: 'mingjian', name: '名間鄉' },
+      { id: 'lugu', name: '鹿谷鄉' }, { id: 'zhongliao', name: '中寮鄉' }, { id: 'yuchi', name: '魚池鄉' },
+      { id: 'guoxing', name: '國姓鄉' }, { id: 'shuili', name: '水里鄉' }, { id: 'xinyi', name: '信義鄉' },
+      { id: 'renai', name: '仁愛鄉' }
     ];
 
     let state = {
@@ -450,7 +310,7 @@
           const app = initializeApp(myFirebaseConfig);
           const auth = getAuth(app);
           db = getFirestore(app);
-          appId = 'nantou-event-room-1';
+          appId = 'nantou-event-room-1'; 
 
           document.getElementById('network-status').innerText = '多人連線模式・連線同步中...';
 
@@ -479,13 +339,13 @@
       onSnapshot(docRef, (docSnap) => {
         document.getElementById('loading-spinner').classList.add('hidden');
         document.getElementById('tablet-grid').classList.remove('hidden');
-
+        
         if (docSnap.exists()) {
           state.litStatus = docSnap.data();
         } else {
           state.litStatus = {};
         }
-
+        
         renderGrid();
         updateProgress();
       }, (err) => {
@@ -505,20 +365,20 @@
       rows.forEach(rowTowns => {
         const rowDiv = document.createElement('div');
         rowDiv.className = 'flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 lg:gap-5 w-full';
-
+        
         rowTowns.forEach(town => {
           const isLit = state.litStatus[town.id];
           const btn = document.createElement('button');
           btn.onclick = () => window.handleTabletClick(town.id);
-
-          let btnClasses = isLit
+          
+          let btnClasses = isLit 
             ? 'bg-white scale-105 transform cursor-pointer ring-2 md:ring-4 ring-[#317EE0] animate-lit-tablet'
             : 'bg-white hover:-translate-y-1 hover:shadow-xl cursor-pointer shadow-md';
 
           btn.className = `group relative flex flex-col items-center justify-center w-[100px] h-[140px] sm:w-[110px] sm:h-[155px] md:w-[115px] md:h-[160px] lg:w-[130px] lg:h-[185px] rounded-[1rem] md:rounded-[1.25rem] transition-all duration-500 ${btnClasses}`;
 
           let innerBg = isLit ? 'bg-gradient-to-br from-[#317EE0] to-[#2563B0]' : 'bg-slate-800';
-
+          
           let innerHtml = isLit ? `
             <div class="absolute inset-0 bg-white/10 animate-pulse"></div>
             <img src="nantoulogo_lightblue.png" class="w-10 h-10 md:w-12 md:h-12 object-contain mb-1 md:mb-2 z-10 drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]" alt="Logo" onerror="this.style.display='none'">
@@ -537,7 +397,7 @@
           `;
           rowDiv.appendChild(btn);
         });
-
+        
         grid.appendChild(rowDiv);
       });
     }
@@ -545,14 +405,14 @@
     function updateProgress() {
       const newLitCount = Object.values(state.litStatus).filter(Boolean).length;
       const percent = Math.round((newLitCount / 13) * 100);
-
+      
       document.getElementById('progress-bar-fill').style.width = `${percent}%`;
       document.getElementById('progress-text').innerText = `完成度 ${percent}% (${newLitCount}/13)`;
 
       if (newLitCount > state.litCount) {
         const container = document.getElementById('progress-container');
         container.classList.remove('animate-progress-bump');
-        void container.offsetWidth;
+        void container.offsetWidth; 
         container.classList.add('animate-progress-bump');
       }
       state.litCount = newLitCount;
@@ -578,7 +438,7 @@
         const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tablets', 'shared_state');
         try {
           await setDoc(docRef, { [townId]: true }, { merge: true });
-        } catch (e) { console.error(e); }
+        } catch(e) { console.error(e); }
       } else {
         state.litStatus[townId] = true;
         renderGrid();
@@ -598,7 +458,7 @@
     }
 
     window.handleReset = async () => {
-      stopCelebrationSound();
+      stopCelebrationSound(); 
       stopConfetti(); // 重置時立刻停止撒花
 
       if (state.useFirebase && state.user) {
@@ -616,9 +476,9 @@
     window.showCelebrationModal = () => {
       const modal = document.getElementById('celebration-modal');
       modal.classList.remove('hidden');
-
+      
       playCelebrationSound();
-
+      
       const duration = 25 * 1000;
       const animationEnd = Date.now() + duration;
       const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
@@ -628,7 +488,7 @@
       // 避免重複開啟造成疊加，先清空現有的計時器
       if (state.confettiInterval) clearInterval(state.confettiInterval);
 
-      state.confettiInterval = setInterval(function () {
+      state.confettiInterval = setInterval(function() {
         const timeLeft = animationEnd - Date.now();
         if (timeLeft <= 0) return clearInterval(state.confettiInterval);
         const particleCount = 50 * (timeLeft / duration);
@@ -638,7 +498,7 @@
     };
 
     window.hideCelebrationModal = () => {
-      stopCelebrationSound();
+      stopCelebrationSound(); 
       stopConfetti(); // 關閉視窗時也立刻停止撒花
       document.getElementById('celebration-modal').classList.add('hidden');
     };
@@ -646,5 +506,4 @@
     init();
   </script>
 </body>
-
 </html>
