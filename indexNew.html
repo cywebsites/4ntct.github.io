@@ -161,8 +161,8 @@
     </div>
   </header>
 
-  <!-- 遊戲主體：平板網格 (加入 pb-32 確保不被底部面板擋住) -->
-  <main class="relative z-10 max-w-6xl mx-auto px-2 md:px-4 pb-32 flex-grow w-full">
+  <!-- 遊戲主體：平板網格 (將 pb 改小，讓 Footer 可以跟在後面) -->
+  <main class="relative z-10 max-w-6xl mx-auto px-2 md:px-4 pb-4 flex-grow w-full">
     <div id="loading-spinner" class="flex flex-col items-center justify-center py-20 text-[#317EE0]">
       <svg class="w-12 h-12 animate-pulse mb-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" x2="12.01" y1="20" y2="20"/></svg>
       <p class="text-lg font-bold tracking-widest">系統初始化中...</p>
@@ -173,9 +173,13 @@
     </div>
   </main>
 
-  <footer class="relative z-10 w-full flex justify-center items-center pb-36 md:pb-44 mt-auto">
+  <!-- 頁尾 Logo (緊接在平板之後排列) -->
+  <footer class="relative z-10 w-full flex justify-center items-center pt-8 pb-8">
     <img src="42530_f6.png" alt="南投縣政府" class="h-8 md:h-12 object-contain opacity-90 drop-shadow-md hover:opacity-100 transition-opacity" onerror="this.style.display='none'">
   </footer>
+
+  <!-- 隱形的佔位區塊：當底部控制面板出現時，自動撐開網頁最底部空間，確保 Logo 不被面板遮擋 -->
+  <div id="panel-spacer" class="w-full h-24 md:h-32 hidden"></div>
 
   <!-- ============================================== -->
   <!-- 底部操作面板 (依照身分顯示) -->
@@ -339,11 +343,16 @@
       // 隱藏所有面板，根據身分開啟對應面板
       document.getElementById('panel-lighter').classList.add('hidden');
       document.getElementById('panel-admin').classList.add('hidden');
+      document.getElementById('panel-spacer').classList.add('hidden'); // 重置佔位區塊
       
-      if (role === 'lighter') document.getElementById('panel-lighter').classList.remove('hidden');
+      if (role === 'lighter') {
+        document.getElementById('panel-lighter').classList.remove('hidden');
+        document.getElementById('panel-spacer').classList.remove('hidden'); // 顯示佔位以防按鈕遮擋
+      }
       if (role === 'admin') {
         document.getElementById('panel-admin').classList.remove('hidden');
         document.querySelectorAll('.admin-only-btn').forEach(el => el.classList.remove('hidden'));
+        document.getElementById('panel-spacer').classList.remove('hidden'); // 顯示佔位以防按鈕遮擋
       }
       
       try {
