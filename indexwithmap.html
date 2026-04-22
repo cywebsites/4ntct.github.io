@@ -2,7 +2,6 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <!-- 加入 maximum-scale=1.0, user-scalable=no 來鎖定畫面縮放 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>南投縣生生有平板達標宣布活動</title>
   
@@ -55,10 +54,10 @@
       from { background-position: 1.5rem 0; }
       to { background-position: 0 0; }
     }
-    /* 99% 地圖專屬閃爍放大特效 */
+    /* 🌟 高亮版：99% 地圖專屬閃爍放大特效 (黃金+科技藍雙重光暈) */
     @keyframes mapGlow {
-      0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 30px rgba(49, 126, 224, 0.6)); transform: scale(1); }
-      50% { filter: drop-shadow(0 0 25px rgba(255, 255, 255, 1)) drop-shadow(0 0 60px rgba(49, 126, 224, 1)); transform: scale(1.04); }
+      0%, 100% { filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8)) drop-shadow(0 0 30px rgba(49, 126, 224, 0.6)); transform: scale(1); }
+      50% { filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1)) drop-shadow(0 0 60px rgba(49, 126, 224, 0.9)); transform: scale(1.06); }
     }
     .progress-stripes {
       background-image: linear-gradient(
@@ -185,21 +184,28 @@
   <div id="panel-spacer" class="w-full h-24 md:h-32 hidden"></div>
 
   <!-- ============================================== -->
-  <!-- 99% 地圖集氣視窗 (z-index 35 確保在面板下方) -->
+  <!-- 🌟 升級版亮色系：99% 地圖集氣視窗 -->
   <!-- ============================================== -->
-  <div id="map-modal" class="fixed inset-0 z-[35] items-center justify-center bg-slate-900/85 backdrop-blur-sm p-4 pb-28 md:pb-36 hidden flex overflow-hidden">
-    <div class="relative bg-slate-800/80 border-4 border-[#317EE0] rounded-[2rem] md:rounded-[3rem] shadow-[0_0_50px_rgba(49,126,224,0.5)] w-full max-w-4xl h-[85vh] md:h-[80vh] text-center animate-pop-in flex flex-col items-center justify-between p-6 md:p-10">
+  <!-- 背景遮罩改為透光白/灰，保留背景辨識度 -->
+  <div id="map-modal" class="fixed inset-0 z-[35] items-center justify-center bg-slate-800/40 backdrop-blur-md p-4 pb-28 md:pb-36 hidden flex overflow-hidden">
+    
+    <!-- 視窗本體改為亮色系白底 + 橘色雙邊框，更吸睛耀眼 -->
+    <div class="relative bg-white/95 border-[6px] border-[#FF7145] rounded-[2rem] md:rounded-[3rem] shadow-[0_0_60px_rgba(255,113,69,0.5)] w-full max-w-4xl h-[85vh] md:h-[80vh] text-center animate-pop-in flex flex-col items-center justify-between p-6 md:p-10">
       
-      <h2 class="text-3xl md:text-5xl font-black text-white mt-2 mb-2 md:mb-4 tracking-widest drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] flex-shrink-0 animate-pulse">
+      <!-- 標題改為高亮漸層藍，不再是白字 -->
+      <h2 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#317EE0] to-[#5A9CF0] mt-2 mb-2 md:mb-4 tracking-widest drop-shadow-md flex-shrink-0 animate-pulse">
         全縣點亮 準備啟動
       </h2>
       
       <div class="flex-1 w-full min-h-0 relative flex justify-center items-center my-4">
-        <div class="absolute inset-0 bg-[#317EE0]/30 animate-pulse rounded-full blur-[60px] pointer-events-none"></div>
-        <img src="nantoumapSVG.svg" alt="南投縣地圖" class="w-full h-full object-contain animate-map-glow z-10 relative drop-shadow-2xl" onerror="this.style.display='none'">
+        <!-- 地圖背後的放射狀金色陽光光暈 -->
+        <div class="absolute inset-0 bg-[radial-gradient(circle,rgba(255,215,0,0.3)_0%,rgba(49,126,224,0.1)_50%,transparent_70%)] animate-pulse rounded-full blur-[20px] pointer-events-none"></div>
+        
+        <img src="nantoumapSVG.svg" alt="南投縣地圖" class="w-full h-full object-contain animate-map-glow z-10 relative" onerror="this.style.display='none'">
       </div>
       
-      <p class="text-[#FF7145] bg-white/10 px-6 py-2 rounded-full text-lg md:text-2xl font-bold animate-bounce tracking-wider flex-shrink-0 border border-[#FF7145]/30">
+      <!-- 底部提示改為實心高亮漸層橘按鈕風格 -->
+      <p class="text-white bg-gradient-to-r from-[#FF7145] to-[#FF8A66] px-8 py-3 rounded-full text-xl md:text-3xl font-bold animate-bounce tracking-wider flex-shrink-0 shadow-[0_0_20px_rgba(255,113,69,0.6)] border-4 border-white">
         等待啟動者按下達標鍵...
       </p>
     </div>
@@ -257,12 +263,20 @@
         </div>
       </div>
 
-      <div class="absolute bottom-4 left-4 md:bottom-6 md:left-6 flex flex-col items-start gap-1.5 z-50 hidden admin-only-btn">
-        <button onclick="window.handleReset(); window.hideCelebrationModal();" class="px-4 py-2 md:px-6 md:py-2.5 bg-[#317EE0] hover:bg-[#2563B0] text-white font-bold rounded-full transition-all hover:scale-105 shadow-md flex items-center gap-1.5 md:gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 md:w-5 md:h-5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
-          <span class="text-xs md:text-sm lg:text-base">重置</span>
+      <div class="absolute bottom-4 left-4 md:bottom-6 md:left-6 flex flex-col items-start gap-2 md:gap-3 z-50 hidden admin-only-btn">
+        <!-- 新增：返回 99% 啟動畫面按鈕 -->
+        <button onclick="window.handleBackTo99(); window.hideCelebrationModal();" class="px-4 py-2 md:px-6 md:py-2.5 bg-gradient-to-r from-[#FF7145] to-[#FF8A66] hover:from-[#E65C30] hover:to-[#FF7145] text-white font-bold rounded-full transition-all hover:scale-105 shadow-[0_0_15px_rgba(255,113,69,0.5)] flex items-center gap-1.5 md:gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 md:w-5 md:h-5"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+          <span class="text-xs md:text-sm lg:text-base">返回啟動畫面</span>
         </button>
-        <div class="text-[10px] md:text-xs text-slate-400 opacity-80 font-light tracking-wider ml-2 md:ml-3 mt-1">Designed by NTCT</div>
+        
+        <!-- 原本的重置按鈕 (調暗並縮小，避免彩排時誤觸完全歸零) -->
+        <button onclick="window.handleReset(); window.hideCelebrationModal();" class="px-3 py-1.5 md:px-4 md:py-2 bg-slate-700/80 hover:bg-slate-600 text-white font-bold rounded-full transition-all hover:scale-105 shadow-md flex items-center gap-1.5 border border-slate-500">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 md:w-4 md:h-4"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          <span class="text-[10px] md:text-xs">完全重置進度 (0%)</span>
+        </button>
+        
+        <div class="text-[10px] md:text-xs text-slate-400 opacity-80 font-light tracking-wider ml-1 md:ml-2">Designed by NTCT</div>
       </div>
 
       <div class="absolute bottom-4 right-4 md:bottom-6 md:right-6 flex flex-col items-end gap-1.5 z-50">
@@ -587,6 +601,22 @@
         } catch (e) {}
       } else {
         processNewState({ clicks: 0, isTriggered: false });
+      }
+    };
+
+    // 新增：退回 99% 啟動畫面的功能
+    window.handleBackTo99 = async () => {
+      stopCelebrationSound(); 
+      stopConfetti(); 
+
+      if (state.useFirebase && state.user) {
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tablets', 'shared_state');
+        try { 
+          // 198 次點擊 * 0.5% = 99% (退回等待啟動狀態)
+          await setDoc(docRef, { clicks: 198, isTriggered: false }); 
+        } catch (e) {}
+      } else {
+        processNewState({ clicks: 198, isTriggered: false });
       }
     };
 
