@@ -237,7 +237,7 @@
               <div class="flex justify-center items-center gap-3 mt-1">
                 <button onclick="window.handleBGMVolume(-0.05)" class="px-4 py-1.5 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-bold shadow-sm transition-transform active:scale-95 text-sm">🔉 減小</button>
                 <!-- 99% 地圖視窗的管理者面板數字 -->
-                <span class="text-slate-800 text-base font-black w-12 text-center vol-display">25%</span>
+                <span class="text-slate-800 text-base font-black w-12 text-center vol-display">50%</span>
                 <button onclick="window.handleBGMVolume(0.05)" class="px-4 py-1.5 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-bold shadow-sm transition-transform active:scale-95 text-sm">🔊 增加</button>
               </div>
             </div>
@@ -266,7 +266,7 @@
       <div class="h-4 w-[1px] bg-slate-600 mx-1"></div>
       <button onclick="window.handleBGMVolume(-0.05)" class="px-3 py-1.5 bg-slate-600 hover:bg-slate-500 text-white font-bold rounded-full transition-transform active:scale-95 shadow-sm text-xs md:text-sm">🔉</button>
       <!-- 主畫面底部的管理者面板數字 -->
-      <span class="text-white text-xs font-bold w-10 text-center vol-display">25%</span>
+      <span class="text-white text-xs font-bold w-10 text-center vol-display">50%</span>
       <button onclick="window.handleBGMVolume(0.05)" class="px-3 py-1.5 bg-slate-600 hover:bg-slate-500 text-white font-bold rounded-full transition-transform active:scale-95 shadow-sm text-xs md:text-sm">🔊</button>
     </div>
     <div class="h-6 w-[2px] bg-slate-600 hidden md:block mx-1"></div>
@@ -359,7 +359,7 @@
 
     // 實體背景音樂物件的初始音量設定
     bgmAudio.loop = true;
-    bgmAudio.volume = 0.25;
+    bgmAudio.volume = 0.5;
     
     let isAudioUnlocked = false;
 
@@ -434,7 +434,7 @@
     let state = {
       role: null, globalProgress: 0, litCount: 0, isComplete: false,
       // 全域狀態的預設音量紀錄
-      bgmPlaying: false, bgmRestartTrig: 0, bgmVolume: 0.25,   
+      bgmPlaying: false, bgmRestartTrig: 0, bgmVolume: 0.5,   
       useFirebase: false, user: null, confettiInterval: null,
       clicks: 0, isInitialSync: true, isTransitioningToTarget: false
     };
@@ -526,7 +526,7 @@
       const bgmPlaying = data.bgmPlaying || false;
       const bgmRestartTrig = data.bgmRestartTrig || 0;
       // Firebase 資料同步的防呆預設值
-      const bgmVolume = data.bgmVolume !== undefined ? data.bgmVolume : 0.25;
+      const bgmVolume = data.bgmVolume !== undefined ? data.bgmVolume : 0.5;
       
       let newProgress = isTriggered ? 100 : Math.min(99, clicks * 0.3); 
       let newLitCount = Math.min(13, Math.floor(newProgress / 7.6));
